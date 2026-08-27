@@ -72,10 +72,9 @@
 
 /* ============================= BASE ============================= */
 *,*::before,*::after{box-sizing:border-box;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
+html{scroll-behavior:smooth;}
 body{
   margin:0;
-  overflow-x:hidden;
   background:var(--bg);
   color:var(--ink);
   font-family:'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -662,51 +661,43 @@ body.drawer-open .drawer{transform:translateX(0);}
 }
 
 /* ============================= HERO: AI prompt composer ============================= */
-.hero-composer{position:relative;width:100%;max-width:600px;margin:0 auto;padding-top:38px;}
+.hero-composer{position:relative;width:100%;max-width:600px;margin:0 auto;}
 
-/* small orbiting wireframe accent — reads as "AI" without a dated rotating-rainbow border */
-.hero-orb-decor{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:104px;height:104px;z-index:0;pointer-events:none;
-}
-.hero-orb-glow{
-  position:absolute;inset:14px;border-radius:50%;
-  background:radial-gradient(circle, color-mix(in srgb, var(--brand-2) 60%, transparent), transparent 70%);
-  filter:blur(16px);
-  animation:orb-pulse 4s ease-in-out infinite;
-}
-@keyframes orb-pulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:.8;transform:scale(1.1);}}
-.hero-orb-svg{position:relative;width:100%;height:100%;overflow:visible;}
-.orb-ring{fill:none;stroke-width:1;transform-origin:60px 60px;}
-.orb-ring.ring-a{stroke:url(#orbGradA);animation:orb-spin-a 13s linear infinite;}
-.orb-ring.ring-b{stroke:url(#orbGradB);opacity:.7;animation:orb-spin-b 19s linear infinite;}
-.orb-ring.ring-c{stroke:url(#orbGradA);opacity:.55;animation:orb-spin-c 16s linear infinite;}
-.orb-ring.ring-d{stroke:url(#orbGradB);opacity:.85;animation:orb-spin-d 10s linear infinite;}
-@keyframes orb-spin-a{from{transform:rotate(8deg);}to{transform:rotate(368deg);}}
-@keyframes orb-spin-b{from{transform:rotate(100deg);}to{transform:rotate(460deg);}}
-@keyframes orb-spin-c{from{transform:rotate(50deg);}to{transform:rotate(410deg);}}
-@keyframes orb-spin-d{from{transform:rotate(335deg);}to{transform:rotate(-25deg);}}
-
-/* single sleek glowing bar — icon, input and send button in one row */
+/* single sleek bar — icon, input and send button in one row, framed by a
+   comet of light that continuously travels around the outline */
 .hero-composer-box{
   position:relative;z-index:1;
   display:flex;align-items:center;flex-wrap:wrap;gap:14px;
   border-radius:20px;
   padding:13px 14px 13px 20px;
   background:var(--bg-panel);
-  border:1.5px solid var(--brand-2);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--brand-2) 22%, transparent),
-    0 12px 40px -12px color-mix(in srgb, var(--brand-2) 55%, transparent),
-    0 0 70px -14px color-mix(in srgb, var(--brand) 45%, transparent);
-  transition:box-shadow .25s ease, border-color .25s ease;
+  border:1px solid color-mix(in srgb, var(--line-strong) 65%, transparent);
+  box-shadow:0 20px 50px -26px rgba(0,0,0,.55), 0 0 46px -20px color-mix(in srgb, var(--brand-2) 32%, transparent);
+  transition:box-shadow .3s ease;
 }
+@property --beam-angle{syntax:'<angle>';inherits:false;initial-value:0deg;}
+.hero-composer-box::before{
+  content:'';
+  position:absolute;inset:-1.5px;z-index:-1;
+  border-radius:21px;padding:1.2px;
+  background:conic-gradient(from var(--beam-angle),
+    transparent 0deg, transparent 270deg,
+    var(--brand) 296deg, var(--brand-2) 320deg, var(--brand) 344deg,
+    transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  filter:drop-shadow(0 0 5px color-mix(in srgb, var(--brand-2) 70%, transparent));
+  animation:beam-rotate 4s linear infinite;
+  pointer-events:none;
+}
+@keyframes beam-rotate{to{--beam-angle:360deg;}}
 .hero-composer-box:focus-within{
-  border-color:var(--brand-2);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--brand-2) 38%, transparent),
-    0 14px 50px -10px color-mix(in srgb, var(--brand-2) 70%, transparent),
-    0 0 90px -10px color-mix(in srgb, var(--brand) 60%, transparent);
+  box-shadow:0 24px 64px -20px rgba(0,0,0,.55), 0 0 60px -14px color-mix(in srgb, var(--brand-2) 42%, transparent);
+}
+.hero-composer-box:focus-within::before{animation-duration:1.6s;}
+@media (prefers-reduced-motion: reduce){
+  .hero-composer-box::before{animation:none;background:conic-gradient(var(--brand), var(--brand-2), var(--brand));}
 }
 .hero-input-icon{
   flex-shrink:0;width:24px;height:24px;
@@ -1369,25 +1360,6 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
     </div>
 
     <div class="hero-composer">
-      <div class="hero-orb-decor" aria-hidden="true">
-        <div class="hero-orb-glow"></div>
-        <svg class="hero-orb-svg" viewBox="0 0 120 120">
-          <defs>
-            <linearGradient id="orbGradA" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="var(--brand)"/>
-              <stop offset="100%" stop-color="var(--brand-2)"/>
-            </linearGradient>
-            <linearGradient id="orbGradB" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="var(--brand-2)"/>
-              <stop offset="100%" stop-color="var(--brand-violet)"/>
-            </linearGradient>
-          </defs>
-          <ellipse class="orb-ring ring-a" cx="60" cy="60" rx="52" ry="18"/>
-          <ellipse class="orb-ring ring-b" cx="60" cy="60" rx="52" ry="18"/>
-          <ellipse class="orb-ring ring-c" cx="60" cy="60" rx="30" ry="52"/>
-          <ellipse class="orb-ring ring-d" cx="60" cy="60" rx="44" ry="14"/>
-        </svg>
-      </div>
       <div class="hero-composer-box" id="heroComposerBox">
         <span class="hero-input-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
