@@ -478,7 +478,6 @@ body.drawer-open .drawer{transform:translateX(0);}
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .hero-desc{font-size:1.15rem;color:var(--ink-soft);max-width:600px;}
-.hero-ctas{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:4px;}
 .trust-row{
   display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:10px 0;margin-top:18px;font-size:0.82rem;color:var(--ink-soft);
@@ -642,6 +641,121 @@ body.drawer-open .drawer{transform:translateX(0);}
 .prompt-input input{border:none;background:none;outline:none;font-family:'Inter Tight',sans-serif;font-size:0.92rem;color:var(--ink);flex:1;min-width:0;}
 .prompt-input input::placeholder{color:var(--ink-faint);}
 .prompt-input button{flex-shrink:0;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, var(--brand), var(--brand-2));color:var(--brand-ink);}
+
+/* ============================= HERO: "2 min" stat callout — compact single-line badge ============================= */
+.hero-stat{
+  display:inline-flex;align-items:center;gap:10px;
+  max-width:100%;
+  padding:9px 20px;border-radius:100px;
+  background:var(--bg-panel-2);border:1px solid var(--line);
+  font-size:0.85rem;color:var(--ink-soft);
+}
+.hero-stat-num{
+  font-family:'Inter Tight',sans-serif;font-weight:800;font-size:0.92rem;
+  background:linear-gradient(135deg, var(--brand), var(--brand-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  flex-shrink:0;white-space:nowrap;
+}
+.hero-stat-sep{width:1px;height:14px;background:var(--line-strong);flex-shrink:0;}
+@media (max-width:560px){
+  .hero-stat{border-radius:16px;padding:12px 18px;white-space:normal;text-align:left;}
+}
+
+/* ============================= HERO: AI prompt composer ============================= */
+.hero-composer{position:relative;width:100%;max-width:600px;margin:0 auto;padding-top:38px;}
+
+/* small orbiting wireframe accent — reads as "AI" without a dated rotating-rainbow border */
+.hero-orb-decor{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:104px;height:104px;z-index:0;pointer-events:none;
+}
+.hero-orb-glow{
+  position:absolute;inset:14px;border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb, var(--brand-2) 60%, transparent), transparent 70%);
+  filter:blur(16px);
+  animation:orb-pulse 4s ease-in-out infinite;
+}
+@keyframes orb-pulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:.8;transform:scale(1.1);}}
+.hero-orb-svg{position:relative;width:100%;height:100%;overflow:visible;}
+.orb-ring{fill:none;stroke-width:1;transform-origin:60px 60px;}
+.orb-ring.ring-a{stroke:url(#orbGradA);animation:orb-spin-a 13s linear infinite;}
+.orb-ring.ring-b{stroke:url(#orbGradB);opacity:.7;animation:orb-spin-b 19s linear infinite;}
+.orb-ring.ring-c{stroke:url(#orbGradA);opacity:.55;animation:orb-spin-c 16s linear infinite;}
+.orb-ring.ring-d{stroke:url(#orbGradB);opacity:.85;animation:orb-spin-d 10s linear infinite;}
+@keyframes orb-spin-a{from{transform:rotate(8deg);}to{transform:rotate(368deg);}}
+@keyframes orb-spin-b{from{transform:rotate(100deg);}to{transform:rotate(460deg);}}
+@keyframes orb-spin-c{from{transform:rotate(50deg);}to{transform:rotate(410deg);}}
+@keyframes orb-spin-d{from{transform:rotate(335deg);}to{transform:rotate(-25deg);}}
+
+/* single sleek glowing bar — icon, input and send button in one row */
+.hero-composer-box{
+  position:relative;z-index:1;
+  display:flex;align-items:center;flex-wrap:wrap;gap:14px;
+  border-radius:20px;
+  padding:13px 14px 13px 20px;
+  background:var(--bg-panel);
+  border:1.5px solid var(--brand-2);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--brand-2) 22%, transparent),
+    0 12px 40px -12px color-mix(in srgb, var(--brand-2) 55%, transparent),
+    0 0 70px -14px color-mix(in srgb, var(--brand) 45%, transparent);
+  transition:box-shadow .25s ease, border-color .25s ease;
+}
+.hero-composer-box:focus-within{
+  border-color:var(--brand-2);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--brand-2) 38%, transparent),
+    0 14px 50px -10px color-mix(in srgb, var(--brand-2) 70%, transparent),
+    0 0 90px -10px color-mix(in srgb, var(--brand) 60%, transparent);
+}
+.hero-input-icon{
+  flex-shrink:0;width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 0 7px color-mix(in srgb, var(--brand-2) 65%, transparent));
+  animation:spark-twinkle 2.8s ease-in-out infinite;
+}
+.hero-input-icon svg{width:100%;height:100%;}
+@keyframes spark-twinkle{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:1;}
+  50%{transform:scale(1.14) rotate(10deg);opacity:.8;}
+}
+.hero-composer-box input{
+  flex:1;min-width:120px;border:none;background:none;outline:none;
+  font-family:'Inter Tight',sans-serif;font-size:1.05rem;color:var(--ink);
+  padding:6px 0;
+}
+.hero-composer-box input::placeholder{color:var(--ink-faint);}
+.hero-composer-box > button{
+  flex-shrink:0;width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, var(--brand), var(--brand-2));color:#fff;
+  box-shadow:0 8px 20px -6px color-mix(in srgb, var(--brand-2) 55%, transparent);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.hero-composer-box > button:hover{transform:scale(1.08) rotate(8deg);}
+
+.hero-suggestions{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  max-height:0;overflow:hidden;opacity:0;margin-top:0;
+  transition:max-height .3s ease, opacity .25s ease, margin-top .3s ease;
+}
+#heroComposerBox.open ~ .hero-suggestions{max-height:140px;opacity:1;margin-top:18px;}
+.hero-suggestion{
+  font-family:'Inter Tight',sans-serif;font-weight:500;font-size:0.82rem;
+  padding:8px 15px;border-radius:100px;
+  background:color-mix(in srgb, var(--bg-sunken) 75%, transparent);
+  border:1px solid color-mix(in srgb, var(--line) 85%, transparent);
+  color:var(--ink-soft);
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.hero-suggestion:hover{background:var(--card-flat-hover);color:var(--ink);border-color:var(--brand-2);}
+.hero-secondary-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.86rem;font-weight:500;color:var(--ink-soft);
+  margin-top:2px;transition:color .15s ease;
+}
+.hero-secondary-link svg{width:13px;height:13px;}
+.hero-secondary-link:hover{color:var(--brand-2);}
 
 /* ============================= HOW IT WORKS (DARP) — oval pill badges ============================= */
 .darp-section{position:relative;overflow:hidden;}
@@ -1247,10 +1361,57 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
     <span class="eyebrow">Finance observability for the office of the CFO</span>
     <h1><span class="grad-text">Recover first.</span><br>Never lose it again.</h1>
     <p class="hero-desc">We find the money already lost in your transactions — and get it back. Then the same rules keep watching, for good.</p>
-    <div class="hero-ctas">
-      <a href="#cta" class="btn btn-primary">Tell us your problem <svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></a>
-      <a href="#video" class="btn btn-ghost">See how it works</a>
+
+    <div class="hero-stat">
+      <span class="hero-stat-num">2 min</span>
+      <span class="hero-stat-sep"></span>
+      <span>That's how fast you get a recoverable number.</span>
     </div>
+
+    <div class="hero-composer">
+      <div class="hero-orb-decor" aria-hidden="true">
+        <div class="hero-orb-glow"></div>
+        <svg class="hero-orb-svg" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="orbGradA" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--brand)"/>
+              <stop offset="100%" stop-color="var(--brand-2)"/>
+            </linearGradient>
+            <linearGradient id="orbGradB" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="var(--brand-2)"/>
+              <stop offset="100%" stop-color="var(--brand-violet)"/>
+            </linearGradient>
+          </defs>
+          <ellipse class="orb-ring ring-a" cx="60" cy="60" rx="52" ry="18"/>
+          <ellipse class="orb-ring ring-b" cx="60" cy="60" rx="52" ry="18"/>
+          <ellipse class="orb-ring ring-c" cx="60" cy="60" rx="30" ry="52"/>
+          <ellipse class="orb-ring ring-d" cx="60" cy="60" rx="44" ry="14"/>
+        </svg>
+      </div>
+      <div class="hero-composer-box" id="heroComposerBox">
+        <span class="hero-input-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="heroSparkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--brand)"/>
+                <stop offset="100%" stop-color="var(--brand-2)"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2.5 13.8 9.4 20.8 11 13.8 12.6 12 19.5 10.2 12.6 3.2 11 10.2 9.4 Z" fill="url(#heroSparkGrad)"/>
+          </svg>
+        </span>
+        <input type="text" id="heroMainInput" placeholder="Tell us your problem" aria-label="Describe your finance problem" autocomplete="off">
+        <button aria-label="Submit" id="heroMainBtn"><svg class="icon stroke" style="width:15px;height:15px"><use href="#ic-arrow-right"/></svg></button>
+      </div>
+      <div class="hero-suggestions">
+        <button type="button" class="hero-suggestion">We're paying distributor claims we can't verify</button>
+        <button type="button" class="hero-suggestion">Duplicate and overpaid vendor invoices</button>
+        <button type="button" class="hero-suggestion">Input tax credit we never claimed</button>
+      </div>
+    </div>
+
+    <a href="#video" class="hero-secondary-link">See how it works <svg class="stroke" style="width:13px;height:13px"><use href="#ic-arrow-right"/></svg></a>
+
     <div class="trust-row">
       <svg class="stroke" style="width:14px;height:14px;color:var(--brand-2);flex-shrink:0"><use href="#ic-lock"/></svg>
       <span>Read-only · no process change<span class="sep">·</span>Runs above SAP, NetSuite &amp; Tally<span class="sep">·</span>ISO 27001 · SOC 2</span>
@@ -1945,6 +2106,42 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
     }
     setTimeout(tick, 900);
   }
+})();
+
+/* ============================= HERO AI COMPOSER ============================= */
+(function(){
+  var wrap = document.querySelector('.hero-composer');
+  var box = document.getElementById('heroComposerBox');
+  var input = document.getElementById('heroMainInput');
+  var btn = document.getElementById('heroMainBtn');
+  if(!wrap || !box || !input || !btn) return;
+
+  function openBox(){ box.classList.add('open'); }
+  function closeBox(){ box.classList.remove('open'); }
+
+  input.addEventListener('focus', openBox);
+  input.addEventListener('click', openBox);
+  document.addEventListener('click', function(e){
+    if(!wrap.contains(e.target)) closeBox();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeBox();
+  });
+
+  wrap.querySelectorAll('.hero-suggestion').forEach(function(s){
+    s.addEventListener('click', function(){
+      input.value = s.textContent;
+      input.focus();
+    });
+  });
+
+  function submitProblem(){
+    window.location.hash = 'cta';
+  }
+  btn.addEventListener('click', submitProblem);
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); submitProblem(); }
+  });
 })();
 </script>
 </body>
