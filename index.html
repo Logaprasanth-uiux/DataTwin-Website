@@ -993,6 +993,34 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
 .footer-bottom a{color:var(--ink-faint);}
 .footer-bottom a:hover{color:var(--brand-2);}
 
+/* ============================= DEMO STRIP (post-footer) ============================= */
+.demo-strip-section{padding:36px 0 48px;}
+.demo-strip{
+  display:flex;align-items:center;gap:20px;
+  padding:18px 26px;border-radius:100px;
+  border:1px dashed var(--line-strong);background:var(--bg-sunken);
+  transition:border-color .2s ease, background .2s ease;
+}
+.demo-strip:hover{border-color:var(--brand-2);background:var(--card-flat-hover);}
+.demo-strip-tag{
+  flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  padding:7px 13px;border-radius:100px;
+  background:linear-gradient(135deg, var(--brand), var(--brand-2));color:#fff;
+}
+.demo-strip-text{flex:1;min-width:0;}
+.demo-strip-text strong{display:block;font-size:0.96rem;color:var(--ink);}
+.demo-strip-text p{font-size:0.83rem;color:var(--ink-soft);margin-top:2px;}
+.demo-strip-arrow{
+  flex-shrink:0;width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-panel);color:var(--brand-2);
+  transition:transform .2s ease;
+}
+.demo-strip:hover .demo-strip-arrow{transform:translateX(4px);}
+@media (max-width:640px){
+  .demo-strip{flex-wrap:wrap;border-radius:24px;}
+}
+
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
 }
@@ -1940,6 +1968,21 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
     </div>
   </div>
 </footer>
+
+<!-- ============================= DEMO STRIP — GST DISCOVERY LANDING PAGE ============================= -->
+<!-- Placeholder promo for the standalone GST recovery demo, kept for internal/demo purposes. -->
+<section class="demo-strip-section">
+  <div class="wrap">
+    <a href="gst-discovery/index.html" target="_blank" rel="noopener" class="demo-strip">
+      <span class="demo-strip-tag">Live demo</span>
+      <span class="demo-strip-text">
+        <strong>GST — Input Tax Credit Recovery</strong>
+        <p>See a standalone product flow for one of our recovery use cases. Opens in a new tab.</p>
+      </span>
+      <span class="demo-strip-arrow"><svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></span>
+    </a>
+  </div>
+</section>
 
 <script>
 /* ============================= THEME ============================= */

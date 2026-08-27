@@ -1,0 +1,798 @@
+<title>DARP GST Recovery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>(function(){try{var t=localStorage.getItem('darp-theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    /* Premium dark AI-finance system — committed single visual world, no light variant */
+    --bg: #0B0B0F;
+    --bg-1: #111116;
+    --bg-2: #15151B;
+    --bg-3: #19191F;
+    --line: #26212F;
+    --line-soft: #1C1922;
+    --text: #F3F3F6;
+    --text-muted: #A3A3B0;
+    --text-faint: #6F6F7C;
+    --brass: #7D3CF3;       /* primary accent — electric purple (kept var name for the hero visualization's existing JS) */
+    --brass-strong: #9257F5;
+    --verified: #34D399;    /* semantic: matched / good */
+    --flag: #F0A857;        /* semantic: mismatch / attention */
+    --shadow: 0 30px 80px -30px rgba(125,60,243,0.22), 0 20px 45px -22px rgba(0,0,0,0.6);
+    --radius: 18px;
+    --serif: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+  :root[data-theme="light"]{
+    --bg: #F1F0F6;
+    --bg-1: #F8F7FB;
+    --bg-2: #FDFCFE;
+    --bg-3: #FFFFFF;
+    --line: #DEDCE6;
+    --line-soft: #E7E5EF;
+    --text: #18171F;
+    --text-muted: #57555F;
+    --text-faint: #8B8993;
+    --brass: #6D2FE0;
+    --brass-strong: #5A24C2;
+    --verified: #0E9D63;
+    --flag: #C97816;
+    --shadow: 0 30px 80px -30px rgba(109,47,224,0.16), 0 20px 45px -22px rgba(23,22,31,0.10);
+  }
+
+  /* ============ RESET / BASE ============ */
+  *,*::before,*::after{ box-sizing: border-box; transition: background-color .25s ease, border-color .25s ease, color .25s ease; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; } }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img,svg{ max-width: 100%; display: block; }
+  a{ color: inherit; }
+  .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+  h1,h2,h3{ font-family: var(--serif); font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: -0.02em; }
+  .eyebrow{ font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
+  .tabular{ font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  ::selection{ background: var(--brass); color: var(--bg); }
+  :focus-visible{ outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 4px; }
+
+  /* ============ NAV ============ */
+  header.site{
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(1.1);
+    border-bottom: 1px solid var(--line-soft);
+    transition: border-color .3s ease;
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding: 18px clamp(20px,4vw,48px); max-width:1180px; margin:0 auto; }
+  .wordmark{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .wordmark svg{ width: 26px; height: 26px; }
+  .wordmark .name{ font-family: var(--serif); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
+  .wordmark .of{ font-family: var(--mono); font-size: 10.5px; color: var(--text-faint); letter-spacing: 0.08em; margin-left: 2px; white-space: nowrap; }
+  @media (max-width: 420px){ .wordmark .of{ display: none; } }
+  nav.links{ display:flex; gap: 34px; align-items:center; }
+  nav.links a{ text-decoration:none; color: var(--text-muted); font-size: 14.5px; transition: color .2s ease; }
+  nav.links a:hover{ color: var(--text); }
+  .nav-actions{ display:flex; align-items:center; gap:14px; }
+  .theme-toggle{ display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--text-muted); cursor:pointer; flex-shrink:0; }
+  .theme-toggle:hover{ border-color: var(--brass); color: var(--text); }
+  .theme-toggle svg{ width:16px; height:16px; }
+  .theme-toggle .icon-sun{ display:none; }
+  .theme-toggle .icon-moon{ display:block; }
+  :root[data-theme="light"] .theme-toggle .icon-sun{ display:block; }
+  :root[data-theme="light"] .theme-toggle .icon-moon{ display:none; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+    padding: 11px 20px; border-radius: 999px; text-decoration:none;
+    cursor:pointer; border: 1px solid transparent; white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn-primary{ background: var(--brass); color: #FFFFFF; }
+  .btn-primary:hover{ background: var(--brass-strong); transform: translateY(-1px); box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--brass) 55%, transparent); }
+  .btn-ghost{ border-color: var(--line); color: var(--text); background: transparent; }
+  .btn-ghost:hover{ border-color: var(--brass); color: var(--text); }
+  .btn-sm{ padding: 9px 16px; font-size: 13.5px; }
+  @media (max-width: 780px){ nav.links{ display: none; } }
+
+  /* ============ HERO ============ */
+  .hero{ position: relative; padding: clamp(64px,10vw,120px) 0 clamp(40px,6vw,72px); overflow: hidden; }
+  .hero-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(32px,5vw,64px); align-items: center; }
+  @media (max-width: 900px){ .hero-grid{ grid-template-columns: 1fr; } }
+  .hero h1{ font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; font-weight: 800; }
+  .hero h1 em{ font-style: italic; font-weight: 600; color: var(--brass); }
+  .hero p.lead{ font-size: clamp(16px,1.6vw,18.5px); color: var(--text-muted); max-width: 46ch; margin-top: 22px; }
+  .hero .cta-row{ display:flex; flex-wrap:wrap; gap: 14px; margin-top: 34px; align-items:center; }
+  .hero .microcopy{ font-family: var(--mono); font-size: 12px; color: var(--text-faint); margin-top: 14px; letter-spacing: 0.02em; }
+  .hero-visual{ position: relative; }
+  .hero-visual::before{
+    content: '';
+    position: absolute;
+    inset: -15% -10%;
+    background: radial-gradient(circle at 62% 38%, color-mix(in srgb, var(--brass) 32%, transparent), transparent 68%);
+    filter: blur(50px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .ledger-card{
+    background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .ledger-head{ display:flex; justify-content:space-between; align-items:center; padding: 16px 20px; border-bottom: 1px solid var(--line-soft); }
+  .ledger-head .dot-row{ display:flex; gap:6px; }
+  .ledger-head .dot{ width:7px; height:7px; border-radius:50%; background: var(--line); }
+  .ledger-head .label{ font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); letter-spacing: 0.06em; transition: opacity .5s ease; }
+  canvas#ledgerCanvas{ display:block; width:100%; height: 300px; }
+  .ledger-foot{ display:flex; justify-content:space-between; align-items:center; padding: 14px 20px; border-top: 1px solid var(--line-soft); font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+  .ledger-foot span:first-child{ transition: opacity .5s ease; }
+  .ledger-foot .ok{ display:inline-flex; align-items:center; color: var(--verified); }
+  .pulse-dot{ width:6px; height:6px; margin-right:7px; border-radius:50%; background: var(--verified); animation: dotPulse 1.8s ease-out infinite; }
+  @keyframes dotPulse{
+    0%{ box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified) 55%, transparent); }
+    70%{ box-shadow: 0 0 0 7px transparent; }
+    100%{ box-shadow: 0 0 0 0 transparent; }
+  }
+
+  /* problem marquee */
+  .trustbar{ border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); background: var(--bg-1); overflow: hidden; }
+  .marquee{
+    width: 100%; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track{ display:flex; align-items:center; gap: 20px; width: max-content; padding: 18px 0; animation: marqueeScroll 36s linear infinite; }
+  .marquee:hover .marquee-track{ animation-play-state: paused; }
+  .marquee-item{ font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
+  .marquee-dot{ color: var(--brass); font-size: 12px; }
+  @keyframes marqueeScroll{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation: none; } }
+
+  /* ============ SECTIONS shared ============ */
+  section{ padding: clamp(64px,9vw,112px) 0; }
+  .section-head{ max-width: 640px; margin-bottom: clamp(36px,5vw,56px); }
+  .section-head h2{ font-size: clamp(26px,3.4vw,40px); line-height: 1.14; margin-top: 10px; }
+  .section-head p{ color: var(--text-muted); margin-top: 16px; font-size: 16.5px; max-width: 56ch; }
+  .reveal{ opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* ============ PROBLEM — leak tabs ============ */
+  .leak-tabbar{ display:flex; gap: 4px; overflow-x: auto; padding: 2px 2px 16px; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
+  .leak-tabbar::-webkit-scrollbar{ display: none; }
+  .leak-tab{
+    position: relative; flex: 0 0 auto; min-width: 132px;
+    display: flex; flex-direction: column; gap: 10px;
+    background: none; border: none; cursor: pointer; text-align: left;
+    padding: 12px 16px 14px; font-family: var(--sans);
+  }
+  .leak-tab-num{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text-faint); transition: color .25s ease; }
+  .leak-tab-label{ font-size: 13.5px; font-weight: 600; color: var(--text-muted); white-space: nowrap; transition: color .25s ease; }
+  .leak-tab:hover .leak-tab-label{ color: var(--text); }
+  .leak-tab.active .leak-tab-num{ color: var(--brass); }
+  .leak-tab.active .leak-tab-label{ color: var(--text); }
+  .leak-tab-progress{ position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .leak-tab-fill{ display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--brass), var(--brass-strong)); }
+
+  .leak-panel{
+    position: relative; min-height: 240px;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    overflow: hidden;
+  }
+  .leak-panel-item{
+    position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(30px,4.5vw,50px) clamp(26px,4.5vw,50px);
+    opacity: 0; transform: translateY(10px); transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none;
+  }
+  .leak-panel-item.active{ opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .leak-panel-ghost{
+    position: absolute; top: -0.1em; right: 24px; z-index: 0;
+    font-family: var(--serif); font-weight: 800; line-height: 1;
+    font-size: clamp(90px,14vw,170px); color: var(--brass); opacity: 0.07;
+    pointer-events: none; user-select: none;
+  }
+  .leak-panel-tag{
+    position: relative; z-index: 1;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--flag); border: 1px solid color-mix(in srgb, var(--flag) 40%, var(--line));
+    background: color-mix(in srgb, var(--flag) 10%, transparent);
+    padding: 5px 12px; border-radius: 999px; display: inline-flex; width: max-content;
+  }
+  .leak-panel-item h3{ position: relative; z-index: 1; font-size: clamp(20px,2.4vw,27px); margin: 16px 0 0; max-width: 26ch; }
+  .leak-panel-item p{ position: relative; z-index: 1; color: var(--text-muted); font-size: 15px; line-height: 1.6; margin: 12px 0 0; max-width: 54ch; }
+  @media (max-width: 640px){ .leak-panel{ min-height: 300px; } }
+
+  /* ============ DARP PROCESS ============ */
+  .darp-strip{
+    background: radial-gradient(ellipse 60% 55% at 50% 0%, color-mix(in srgb, var(--brass) 13%, transparent), transparent), var(--bg-2);
+    border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
+  }
+  .darp-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; margin-top: 40px; }
+  @media (max-width: 860px){ .darp-grid{ grid-template-columns: 1fr; } }
+  .darp-cell{ background: var(--bg-3); padding: 30px 26px; position: relative; }
+  .darp-cell .letter{ font-family: var(--serif); font-weight: 800; font-size: 42px; color: var(--brass); line-height: 1; }
+  .darp-cell h4{ font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; margin: 16px 0 10px; color: var(--text); }
+  .darp-cell p{ font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.55; }
+
+  /* ============ ASK / HOW IT WORKS FOR YOU ============ */
+  .ask-grid{ display:grid; grid-template-columns: 1fr auto 1fr; gap: 28px; align-items: center; }
+  @media (max-width: 780px){ .ask-grid{ grid-template-columns: 1fr; } }
+  .ask-card{ background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; }
+  .ask-card .eyebrow{ display:block; margin-bottom: 18px; }
+  .ask-card ul{ list-style: none; margin: 0; padding: 0; }
+  .ask-card li{ display:flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-top: 1px solid var(--line-soft); font-size: 14.5px; line-height: 1.5; color: var(--text-muted); }
+  .ask-card li:first-of-type{ border-top: none; padding-top: 2px; }
+  .icon-badge{
+    width: 34px; height: 34px; flex-shrink: 0; margin-top: 1px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); color: var(--text-muted);
+  }
+  .icon-badge svg{ width: 16px; height: 16px; }
+  .ask-card.give .icon-badge{
+    color: var(--verified);
+    background: color-mix(in srgb, var(--verified) 10%, var(--bg-2));
+    border-color: color-mix(in srgb, var(--verified) 32%, var(--line));
+  }
+  .ask-connector{
+    display:flex; align-items:center; justify-content:center;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--bg-2); border: 1px solid var(--line); color: var(--brass);
+    justify-self: center;
+  }
+  .ask-connector svg{ width: 20px; height: 20px; }
+  @media (max-width: 780px){ .ask-connector{ transform: rotate(90deg); margin: -6px auto; } }
+
+  /* ============ CREDIBILITY ============ */
+  #security{ background: var(--bg-1); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+  .credibility{ display:grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,6vw,72px); align-items:center; }
+  @media (max-width: 860px){ .credibility{ grid-template-columns: 1fr; } }
+  .credibility blockquote{ font-family: var(--serif); font-size: clamp(21px,2.4vw,28px); line-height: 1.4; margin: 0; font-weight: 500; letter-spacing: -0.01em; }
+  .credibility blockquote em{ font-style: italic; color: var(--brass); }
+  .cred-facts{ display:flex; flex-direction:column; gap: 18px; }
+  .cred-fact{ display:flex; gap: 16px; align-items:baseline; border-top: 1px solid var(--line-soft); padding-top: 18px; }
+  .cred-fact:first-child{ border-top: none; padding-top: 0; }
+  .cred-fact .n{ font-family: var(--mono); color: var(--brass); font-size: 14px; flex-shrink:0; width: 26px; }
+  .cred-fact p{ margin: 0; font-size: 15px; color: var(--text-muted); }
+
+  /* ============ FINAL CTA ============ */
+  .final-cta{
+    background: radial-gradient(ellipse 55% 65% at 50% 100%, color-mix(in srgb, var(--brass) 16%, transparent), transparent), var(--bg-1);
+    border-top: 1px solid var(--line-soft); text-align:center; padding: clamp(72px,10vw,120px) 0;
+  }
+  .final-cta h2{ font-size: clamp(28px,4.2vw,46px); max-width: 18ch; margin: 0 auto; line-height: 1.12; }
+  .final-cta p{ color: var(--text-muted); margin: 18px auto 0; max-width: 50ch; font-size: 16.5px; }
+  .final-cta .cta-row{ display:flex; justify-content:center; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+
+  /* ============ FOOTER ============ */
+  footer{ padding: 48px 0 40px; }
+  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap: 28px; border-top: 1px solid var(--line-soft); padding-top: 32px; }
+  .foot-left .wordmark{ margin-bottom: 10px; }
+  .foot-left p{ font-size: 13px; color: var(--text-faint); max-width: 40ch; margin: 0; }
+  .foot-links{ display:flex; gap: 44px; flex-wrap:wrap; }
+  .foot-col h5{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px; }
+  .foot-col a{ display:block; text-decoration:none; color: var(--text-muted); font-size: 13.5px; margin-bottom: 9px; }
+  .foot-col a:hover{ color: var(--text); }
+  .foot-bottom{ margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line-soft); display:flex; justify-content:space-between; flex-wrap:wrap; gap: 10px; font-size: 12.5px; color: var(--text-faint); font-family: var(--mono); }
+</style>
+
+<!-- ============================================================ -->
+
+<header class="site">
+  <div class="nav">
+    <a class="wordmark" href="#top">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="1" y="1" width="30" height="30" rx="8" stroke="var(--brass)" stroke-width="1.4"/>
+        <path d="M9 21V11L16 11.5C18.5 11.7 20 13.3 20 15.7C20 18.1 18.4 19.7 15.8 19.9L9 21Z" stroke="var(--brass)" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M20 21L23 16.2" stroke="var(--brass)" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span class="name">DARP</span><span class="of">by DataTwin</span>
+    </a>
+    <nav class="links">
+      <a href="#problem">The Problem</a>
+      <a href="#process">How DARP Works</a>
+      <a href="#ask">What We Need</a>
+      <a href="#security">Security</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2.5 12H5M19 12h2.5M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="chat-interface.html" data-cta="nav">Start Free Discovery</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">GST Input Tax Credit &nbsp;·&nbsp; A DARP Application</p>
+        <h1>Credit you've<br>already <em>earned</em>,<br>sitting unclaimed.</h1>
+        <p class="lead">DARP checks your filings against your purchases — read-only — and shows exactly what's owed.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="chat-interface.html" data-cta="hero-primary">Start Free GST Discovery →</a>
+          <a class="btn btn-ghost" href="#process">See how it works</a>
+        </div>
+        <p class="microcopy">No ERP access. No commitment — just the number.</p>
+      </div>
+      <div class="hero-visual reveal" data-reveal>
+        <div class="ledger-card">
+          <div class="ledger-head">
+            <span class="label" id="ledgerLabel">GSTR-2B RECONCILIATION — LIVE</span>
+            <div class="dot-row"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          </div>
+          <canvas id="ledgerCanvas" aria-hidden="true"></canvas>
+          <div class="ledger-foot">
+            <span id="ledgerCount">3,214 line items tested</span>
+            <span class="ok"><span class="pulse-dot" aria-hidden="true"></span>matching live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM MARQUEE ============ -->
+  <div class="trustbar" aria-label="Common causes of unclaimed input tax credit">
+    <div class="marquee">
+      <div class="marquee-track" id="problemMarquee"></div>
+    </div>
+  </div>
+
+  <!-- ============ PROBLEM ============ -->
+  <section id="problem">
+    <div class="wrap">
+      <div class="section-head reveal" data-reveal>
+        <p class="eyebrow">Where the leakage actually is</p>
+        <h2>The many ways ITC quietly stops being yours</h2>
+        <p>Not fraud — volume. Thousands of invoices, hundreds of vendors, books closed faster than anyone can check by hand.</p>
+      </div>
+      <div class="reveal" data-reveal>
+        <div class="leak-tabbar" role="tablist" aria-label="Ways ITC goes unclaimed" id="leakTabbar"></div>
+        <div class="leak-panel" id="leakPanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DARP PROCESS ============ -->
+  <div class="darp-strip" id="process">
+    <div class="wrap" style="padding: 96px 0;">
+      <div class="section-head reveal" data-reveal>
+        <p class="eyebrow">The DARP framework, applied to GST</p>
+        <h2>Suspicion to proof to cash to control</h2>
+        <p>One engine, run in the same order every time — the order finance teams can actually act on.</p>
+      </div>
+      <div class="darp-grid reveal" data-reveal>
+        <div class="darp-cell">
+          <span class="letter">D</span>
+          <h4>Discover</h4>
+          <p>GSTR-2B, GSTR-2A, purchase register, e-invoices — every mismatch surfaces. Read-only, nothing filed on your behalf.</p>
+        </div>
+        <div class="darp-cell">
+          <span class="letter">A</span>
+          <h4>Assess</h4>
+          <p>Each finding is quantified against its claim window and ranked by recoverable value.</p>
+        </div>
+        <div class="darp-cell">
+          <span class="letter">R</span>
+          <h4>Recover</h4>
+          <p>We package the reconciliation and vendor evidence your team needs — ready to act on while the window's open.</p>
+        </div>
+        <div class="darp-cell">
+          <span class="letter">P</span>
+          <h4>Prevent</h4>
+          <p>The same checks run at transaction entry going forward — before a return is filed, not after a notice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ASK ============ -->
+  <section id="ask">
+    <div class="wrap">
+      <div class="section-head reveal" data-reveal>
+        <p class="eyebrow">A scoped Discover pass</p>
+        <h2>One or two return periods. A quantified number. No commitment beyond that.</h2>
+        <p>We talk platform only after Discover has a number you agree with. Nothing about your filings changes before that.</p>
+      </div>
+      <div class="ask-grid reveal" data-reveal>
+        <div class="ask-card">
+          <span class="eyebrow">What we need</span>
+          <ul>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></svg></span>
+              <span>Read-only GSTR-1, 2A/2B and 3B for one or two periods</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="1.5"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="14.5" x2="20" y2="14.5"/></svg></span>
+              <span>Purchase register and vendor master data</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg></span>
+              <span>Credit note and reversal history</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+              <span>No system access beyond the extract, no time from your GST team</span>
+            </li>
+          </ul>
+        </div>
+        <div class="ask-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="18" y2="12"/><polyline points="13 7 18 12 13 17"/></svg>
+        </div>
+        <div class="ask-card give">
+          <span class="eyebrow">What you get back</span>
+          <ul>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="18" x2="6" y2="10"/><line x1="12" y1="18" x2="12" y2="6"/><line x1="18" y1="18" x2="18" y2="13"/></svg></span>
+              <span>A findings pack — every mismatch and blocked credit, valued line by line</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="14" y2="7"/><line x1="4" y1="12" x2="11" y2="12"/><line x1="4" y1="17" x2="8" y2="17"/><polyline points="17 6 17 18"/><polyline points="14 15 17 18 20 15"/></svg></span>
+              <span>Each finding ranked by recoverable amount and claim window remaining</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 20 4l-6 17-3-7-8-3z"/></svg></span>
+              <span>Evidence you can hand your GST practitioner directly</span>
+            </li>
+            <li>
+              <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><polyline points="9 12 11 14 15 10"/></svg></span>
+              <span>You act on the findings, or you don't — nothing's signed until you do</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CREDIBILITY ============ -->
+  <section id="security">
+    <div class="wrap credibility">
+      <blockquote class="reveal" data-reveal>Built by <em>finance operators</em>, not tax-software vendors — so the findings survive contact with your GST practitioner.</blockquote>
+      <div class="cred-facts reveal" data-reveal>
+        <div class="cred-fact"><span class="n tabular">01</span><p>Founded out of enterprise finance operations, not compliance tooling.</p></div>
+        <div class="cred-fact"><span class="n tabular">02</span><p>ISO 27001 certified and SOC 2 Type 1 attested, deployed on AWS.</p></div>
+        <div class="cred-fact"><span class="n tabular">03</span><p>Sits above SAP, NetSuite and Tally — no ERP migration.</p></div>
+        <div class="cred-fact"><span class="n tabular">04</span><p>Already runs live on payables, receivables and channel-rebate recovery.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <div class="final-cta">
+    <div class="wrap">
+      <h2 class="reveal" data-reveal>Upload your GST data. Get your recovery number in minutes.</h2>
+      <p class="reveal" data-reveal>No spreadsheets. No manual reconciliation. No waiting for year-end audit to find out what you missed.</p>
+      <div class="cta-row reveal" data-reveal>
+        <a class="btn btn-primary" href="chat-interface.html" data-cta="final">Start Free GST Discovery →</a>
+        <a class="btn btn-ghost" href="mailto:hello@datatwin.ai">Talk to the team</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-left">
+        <a class="wordmark" href="#top">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:22px;height:22px;">
+            <rect x="1" y="1" width="30" height="30" rx="8" stroke="var(--brass)" stroke-width="1.4"/>
+            <path d="M9 21V11L16 11.5C18.5 11.7 20 13.3 20 15.7C20 18.1 18.4 19.7 15.8 19.9L9 21Z" stroke="var(--brass)" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M20 21L23 16.2" stroke="var(--brass)" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span class="name" style="font-size:17px;">DARP</span>
+        </a>
+        <p>A DataTwin platform. AI-native financial intelligence for the office of the CFO.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h5>Platform</h5>
+          <a href="#process">How DARP Works</a>
+          <a href="#problem">GST Recovery</a>
+          <a href="https://launch-site.dsdt0tu4a48ok.amplifyapp.com/">DataTwin.ai</a>
+        </div>
+        <div class="foot-col">
+          <h5>Company</h5>
+          <a href="mailto:hello@datatwin.ai">Contact</a>
+          <a href="#security">Security</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 OneIntegral Technologies Private Limited · Chennai, India</span>
+      <span>DARP — Discover · Assess · Recover · Prevent</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Theme toggle
+  var themeToggle = document.getElementById('themeToggle');
+  if(themeToggle){
+    themeToggle.addEventListener('click', function(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if(isLight){
+        document.documentElement.removeAttribute('data-theme');
+        try{ localStorage.setItem('darp-theme', 'dark'); }catch(e){}
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        try{ localStorage.setItem('darp-theme', 'light'); }catch(e){}
+      }
+    });
+  }
+
+  // Problem marquee
+  var marqueeItems = [
+    'Vendor filed late — credit at risk',
+    'Reversed credit, never reclaimed',
+    'Blocked spend claimed by mistake',
+    'Same invoice, claimed twice',
+    'Wrong GSTIN, lost credit',
+    'Credit notes never netted off'
+  ];
+  var marqueeTrack = document.getElementById('problemMarquee');
+  if(marqueeTrack){
+    var marqueeHtml = marqueeItems.map(function(t){
+      return '<span class="marquee-item">' + t + '</span><span class="marquee-dot" aria-hidden="true">&bull;</span>';
+    }).join('');
+    marqueeTrack.innerHTML = marqueeHtml + marqueeHtml;
+  }
+
+  // Leak tabs — auto-rotating, manually switchable
+  var leakData = [
+    { tag: '2A / 2B mismatch', title: 'Credit claimed, GSTR-2B silent', body: 'No matching entry in 2B — vendor filed late or not at all. Section 16(2)(c) puts the risk on you.' },
+    { tag: 'Rule 37A reclaim', title: 'Reversed and forgotten', body: 'Reversed under Rule 37A when a vendor files late — reclaimable once they catch up. Most teams never circle back.' },
+    { tag: '§17(5) ineligible ITC', title: 'Blocked credit, claimed anyway', body: 'Section 17(5) ineligible spend — travel, food, motor vehicles — claimed anyway under deadline pressure.' },
+    { tag: 'Duplicate ITC', title: 'Same invoice, twice', body: 'Duplicate entries across ERP instances, or credit notes never netted against the claim that used them.' },
+    { tag: 'Head / GSTIN error', title: 'Wrong head, wrong state', body: 'IGST claimed where CGST+SGST applied, or credit claimed under the wrong GSTIN. Right amount, wrong return.' },
+    { tag: 'Manual reconciliation', title: 'Nobody has time to check it by hand', body: 'Thousands of line items, dozens of vendors, one finance team — manual matching doesn’t scale before the filing deadline.' },
+    { tag: 'Notice & audit exposure', title: 'Today’s mismatch is next year’s notice', body: 'Every uncaught gap sits quietly until an assessment — then it’s correspondence, interest, and a scramble to prove what should’ve been caught upfront.' }
+  ];
+  var leakTabbar = document.getElementById('leakTabbar');
+  var leakPanel = document.getElementById('leakPanel');
+  if(leakTabbar && leakPanel){
+    leakData.forEach(function(d, i){
+      var tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'leak-tab' + (i === 0 ? ' active' : '');
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      tab.innerHTML =
+        '<span class="leak-tab-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="leak-tab-label">' + d.tag + '</span>' +
+        '<span class="leak-tab-progress"><span class="leak-tab-fill"></span></span>';
+      leakTabbar.appendChild(tab);
+
+      var panel = document.createElement('div');
+      panel.className = 'leak-panel-item' + (i === 0 ? ' active' : '');
+      panel.innerHTML =
+        '<span class="leak-panel-ghost" aria-hidden="true">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="leak-panel-tag">' + d.tag + '</span>' +
+        '<h3>' + d.title + '</h3>' +
+        '<p>' + d.body + '</p>';
+      leakPanel.appendChild(panel);
+    });
+
+    var leakTabs = leakTabbar.querySelectorAll('.leak-tab');
+    var leakPanels = leakPanel.querySelectorAll('.leak-panel-item');
+    var leakIndex = 0;
+    var leakTimer = null;
+    var LEAK_DURATION = 5200;
+    var leakReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function showLeak(i){
+      leakIndex = (i + leakTabs.length) % leakTabs.length;
+      leakTabs.forEach(function(t, idx){
+        t.classList.toggle('active', idx === leakIndex);
+        t.setAttribute('aria-selected', idx === leakIndex ? 'true' : 'false');
+        var fill = t.querySelector('.leak-tab-fill');
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+      });
+      leakPanels.forEach(function(p, idx){ p.classList.toggle('active', idx === leakIndex); });
+      restartLeakTimer();
+    }
+
+    function restartLeakTimer(){
+      clearTimeout(leakTimer);
+      var fill = leakTabs[leakIndex].querySelector('.leak-tab-fill');
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      void fill.offsetWidth;
+      if(leakReduceMotion){
+        fill.style.width = '100%';
+        return;
+      }
+      fill.style.transition = 'width ' + LEAK_DURATION + 'ms linear';
+      requestAnimationFrame(function(){ fill.style.width = '100%'; });
+      leakTimer = setTimeout(function(){ showLeak(leakIndex + 1); }, LEAK_DURATION);
+    }
+
+    leakTabs.forEach(function(tab, idx){
+      tab.addEventListener('click', function(){ showLeak(idx); });
+    });
+    leakTabbar.closest('.reveal').addEventListener('mouseenter', function(){
+      clearTimeout(leakTimer);
+      var fill = leakTabs[leakIndex].querySelector('.leak-tab-fill');
+      var frozenWidth = getComputedStyle(fill).width;
+      fill.style.transition = 'none';
+      fill.style.width = frozenWidth;
+    });
+    leakTabbar.closest('.reveal').addEventListener('mouseleave', function(){
+      restartLeakTimer();
+    });
+
+    restartLeakTimer();
+  }
+
+  // Hero ledger card — cycling reconciliation indicator
+  var ledgerScenarios = [
+    { label: 'GSTR-2B RECONCILIATION — LIVE', count: '3,214 line items tested' },
+    { label: 'GSTR-1 VS 3B MATCH — LIVE', count: '1,842 line items tested' },
+    { label: 'RULE 37A REVERSAL CHECK — LIVE', count: '926 entries tested' },
+    { label: 'VENDOR MASTER VERIFICATION — LIVE', count: '2,510 vendors tested' },
+    { label: 'PURCHASE REGISTER AUDIT — LIVE', count: '4,087 line items tested' }
+  ];
+  var ledgerLabelEl = document.getElementById('ledgerLabel');
+  var ledgerCountEl = document.getElementById('ledgerCount');
+  var ledgerReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var refreshLedgerRows = null; // wired up once the canvas below initializes
+  if(ledgerLabelEl && ledgerCountEl && !ledgerReduceMotion){
+    var ledgerIdx = 0;
+    setInterval(function(){
+      ledgerLabelEl.style.opacity = 0;
+      ledgerCountEl.style.opacity = 0;
+      setTimeout(function(){
+        ledgerIdx = (ledgerIdx + 1) % ledgerScenarios.length;
+        ledgerLabelEl.textContent = ledgerScenarios[ledgerIdx].label;
+        ledgerCountEl.textContent = ledgerScenarios[ledgerIdx].count;
+        ledgerLabelEl.style.opacity = 1;
+        ledgerCountEl.style.opacity = 1;
+        if(refreshLedgerRows) refreshLedgerRows();
+      }, 500);
+    }, 4200);
+  }
+
+  // Scroll reveal
+  var els = document.querySelectorAll('[data-reveal]');
+  els.forEach(function(el){ el.classList.add('reveal'); });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // Ledger reconciliation canvas — ambient, ties directly to the "mismatch -> matched" story
+  var canvas = document.getElementById('ledgerCanvas');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(canvas){
+    var ctx = canvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rows = [];
+    var ROW_COUNT = 9;
+
+    function themeColors(){
+      var cs = getComputedStyle(document.documentElement);
+      return {
+        line: cs.getPropertyValue('--line-soft').trim(),
+        text: cs.getPropertyValue('--text-faint').trim(),
+        brass: cs.getPropertyValue('--brass').trim(),
+        verified: cs.getPropertyValue('--verified').trim(),
+        flag: cs.getPropertyValue('--flag').trim()
+      };
+    }
+
+    function resize(){
+      var rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      buildRows(rect.width);
+    }
+
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function buildRows(w){
+      rows = [];
+      for(var i=0;i<ROW_COUNT;i++){
+        rows.push({
+          y: i,
+          amt: (rand(4200, 98500)).toFixed(2),
+          state: Math.random() < 0.72 ? 'pending' : 'flag', // will resolve to matched/flag
+          progress: rand(-0.6, 0),
+          speed: rand(0.0035, 0.0065),
+          resolved: false
+        });
+      }
+    }
+
+    function draw(){
+      var rect = canvas.getBoundingClientRect();
+      var w = rect.width, h = rect.height;
+      var colors = themeColors();
+      ctx.clearRect(0,0,w,h);
+      var rowH = h / ROW_COUNT;
+      ctx.font = '11px "IBM Plex Mono", monospace';
+      ctx.textBaseline = 'middle';
+
+      rows.forEach(function(row, i){
+        var y = i*rowH + rowH/2;
+        if(!reduceMotion){ row.progress += row.speed; if(row.progress > 1.4){ row.progress = -0.6; row.resolved=false; row.state = Math.random() < 0.78 ? 'pending':'flag'; } }
+        else { row.progress = 0.6; }
+
+        // baseline row line
+        ctx.strokeStyle = colors.line;
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath(); ctx.moveTo(20, y+rowH/2-1); ctx.lineTo(w-20, y+rowH/2-1); ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // amount label
+        ctx.fillStyle = colors.text;
+        ctx.globalAlpha = 0.85;
+        ctx.fillText('₹ ' + row.amt, 20, y);
+
+        // moving marker: sweeps left->right, resolves to a dot color at ~0.85 progress
+        var mx = 130 + Math.max(0, Math.min(1, row.progress)) * (w - 200);
+        var resolved = row.progress > 0.85;
+        var dotColor = resolved ? (row.state === 'flag' ? colors.flag : colors.verified) : colors.brass;
+        ctx.globalAlpha = row.progress < 0 ? 0 : 1;
+        ctx.beginPath();
+        ctx.arc(mx, y, resolved ? 3.4 : 2.4, 0, Math.PI*2);
+        ctx.fillStyle = dotColor;
+        ctx.fill();
+
+        // trailing line showing sweep
+        if(row.progress > 0){
+          ctx.strokeStyle = dotColor;
+          ctx.globalAlpha = 0.28;
+          ctx.beginPath(); ctx.moveTo(130, y); ctx.lineTo(mx, y); ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+
+        if(resolved){
+          ctx.font = '10px "IBM Plex Mono", monospace';
+          ctx.fillStyle = dotColor;
+          ctx.globalAlpha = 0.9;
+          ctx.fillText(row.state === 'flag' ? 'flag' : 'matched', w-58, y);
+          ctx.font = '11px "IBM Plex Mono", monospace';
+        }
+        ctx.globalAlpha = 1;
+      });
+
+      if(!reduceMotion){ requestAnimationFrame(draw); }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+    if(reduceMotion){ setInterval(draw, 4000); }
+
+    refreshLedgerRows = function(){
+      buildRows(canvas.getBoundingClientRect().width);
+    };
+  }
+})();
+</script>
