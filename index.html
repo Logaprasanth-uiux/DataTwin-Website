@@ -21,6 +21,7 @@
   --ink-faint:#6B6B76;
   --line:#1D1D22;
   --line-strong:#2E2E36;
+  --line-soft:#141418;
   --brand:#2F8CFF;
   --brand-2:#00D9FF;
   --brand-violet:#2456C9;
@@ -46,6 +47,7 @@
   --ink-faint:#84868F;
   --line:#E2E3E8;
   --line-strong:#C7C9D1;
+  --line-soft:#EDEEF1;
   --brand:#0047AD;
   --brand-2:#0098C8;
   --brand-violet:#1B3F94;
@@ -173,18 +175,24 @@ svg.stroke{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;s
   filter:blur(90px);
   pointer-events:none;
   z-index:0;
-  opacity:.5;
+  opacity:.4;
 }
 .arc-glow.g-green{background:radial-gradient(ellipse at center, var(--recover), transparent 68%);}
 .arc-glow.g-violet{background:radial-gradient(ellipse at center, var(--brand-violet), transparent 68%);}
 .arc-glow.g-blue{background:radial-gradient(ellipse at center, var(--brand-2), transparent 68%);}
-:root[data-theme="light"] .arc-glow{opacity:.2;}
+:root[data-theme="light"] .arc-glow{opacity:.16;}
 
 .glow-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
 
-.section{padding:120px 0;position:relative;overflow:hidden;}
-.section-tight{padding:80px 0;position:relative;}
+.section{padding:120px 0;position:relative;overflow:hidden;border-top:1px solid var(--line-soft);}
+.section-tight{padding:80px 0;position:relative;border-top:1px solid var(--line-soft);}
 @media (max-width:900px){.section{padding:80px 0;} .section-tight{padding:56px 0;}}
+
+/* first-visit entrance — subtle bottom-to-top lift, added to each section wrapper by JS */
+@media (prefers-reduced-motion: no-preference){
+  .reveal-pending{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal-pending.reveal-in{opacity:1;transform:none;}
+}
 
 .section-head{
   display:flex;flex-direction:column;align-items:flex-start;gap:18px;
@@ -485,7 +493,7 @@ body.drawer-open .drawer{transform:translateX(0);box-shadow:-30px 0 80px -30px r
 .trust-line{display:inline-flex;align-items:center;gap:8px;}
 
 /* ============================= DEMO / VIDEO (tilted device mockup) ============================= */
-.demo-section{padding:24px 0 110px;position:relative;}
+.demo-section{padding:24px 0 110px;position:relative;border-top:1px solid var(--line-soft);}
 .demo-stage{
   position:relative;border-radius:24px;overflow:hidden;
   min-height:480px;display:flex;align-items:center;justify-content:center;
@@ -2444,18 +2452,39 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
 
 /* ============================= SECTION REVEAL ON SCROLL ============================= */
 (function(){
-  var targets = document.querySelectorAll('#recoverable .recov-list, #recoverable .recov-close, #darp .darp-track, #outcomes .outcomes');
-  if(!targets.length) return;
-  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    targets.forEach(function(t){ t.classList.add('in'); });
+  var parts = document.querySelectorAll('#recoverable .recov-list, #recoverable .recov-close, #darp .darp-track, #outcomes .outcomes');
+  var wraps = document.querySelectorAll('main > section:not(.hero) > .wrap, footer > .wrap');
+  var reduce = !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(reduce){
+    parts.forEach(function(t){ t.classList.add('in'); });
     return;
   }
-  var io = new IntersectionObserver(function(entries){
+
+  var partsIO = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      if(e.isIntersecting){ e.target.classList.add('in'); partsIO.unobserve(e.target); }
     });
   }, { threshold: 0.25, rootMargin: '0px 0px -6% 0px' });
-  targets.forEach(function(t){ io.observe(t); });
+  parts.forEach(function(t){ partsIO.observe(t); });
+
+  /* section-level first-visit entrance lift — scroll-driven, with a load failsafe */
+  wraps.forEach(function(el){
+    if(el.getBoundingClientRect().top >= window.innerHeight * 0.9) el.classList.add('reveal-pending');
+  });
+  function sweep(){
+    var pending = document.querySelectorAll('.reveal-pending:not(.reveal-in)');
+    for(var i=0;i<pending.length;i++){
+      if(pending[i].getBoundingClientRect().top < window.innerHeight * 0.9) pending[i].classList.add('reveal-in');
+    }
+    if(!document.querySelector('.reveal-pending:not(.reveal-in)')){
+      window.removeEventListener('scroll', sweep);
+      window.removeEventListener('resize', sweep);
+    }
+  }
+  window.addEventListener('scroll', sweep, { passive:true });
+  window.addEventListener('resize', sweep);
+  setTimeout(sweep, 600);
 })();
 
 /* ============================= WHAT HAPPENS NEXT — ruler timeline ============================= */
