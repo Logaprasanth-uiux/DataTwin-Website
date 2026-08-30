@@ -342,6 +342,15 @@ header{
 .mega-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;}
 .mega-grid-4{grid-template-columns:repeat(3, minmax(150px,1fr)) minmax(220px,250px);gap:8px 28px;}
 .mega-col{display:flex;flex-direction:column;gap:2px;}
+
+/* ---- Products panel: wider, full-height column dividers, filled promo tray ---- */
+.mega-panel-products{width:min(1020px, 95vw);}
+.mega-panel-products .mega-grid-4{grid-template-columns:repeat(3, minmax(150px,1fr)) 232px;gap:0;align-items:stretch;}
+.mega-panel-products .mega-grid-4 > .mega-col{padding:0 20px;border-right:1px solid var(--line);}
+.mega-panel-products .mega-grid-4 > .mega-col:first-child{padding-left:0;}
+.mega-panel-products .mega-grid-4 > .mega-col-promo{margin-left:20px;}
+.mega-panel-products .mega-grid-4 > .mega-col:nth-child(3) .mega-col-label.spaced{margin-top:auto;}
+.mega-panel-products .mega-col-promo .mega-col-divider{margin-top:auto;}
 .mega-col-label{
   font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;
   color:var(--ink-faint);margin-bottom:6px;
@@ -375,7 +384,7 @@ header{
 }
 .mega-row:hover .ic{background:var(--bg-panel);transform:translateY(-3px);}
 .mega-row .ic svg{width:15px;height:15px;}
-.mega-row-text strong{display:flex;align-items:center;gap:7px;font-size:0.86rem;color:var(--ink);font-weight:600;}
+.mega-row-text strong{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;font-size:0.86rem;color:var(--ink);font-weight:600;}
 .mega-row-text p{font-size:0.76rem;color:var(--ink-soft);margin-top:2px;line-height:1.42;}
 .mega-row-sub{margin-left:16px;}
 .mega-row-sub .ic{width:26px;height:26px;}
@@ -408,13 +417,13 @@ header{
 .mega-feature-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:0.85rem;font-weight:600;color:var(--ink);}
 .mega-feature-link svg{width:14px;height:14px;}
 
-/* ---- promo column: sunken card holding a highlighted CTA card + a follow-on link ---- */
+/* ---- promo column: sunken tray holding a dark CTA card + a follow-on link ---- */
 .mega-col-promo{background:var(--bg-sunken);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px;}
 .mega-promo-card{
   display:flex;flex-direction:column;gap:9px;
-  padding:16px;border-radius:14px;
-  background:linear-gradient(155deg, color-mix(in srgb, var(--brand-violet) 16%, var(--bg-panel-2)), var(--bg-panel-2));
-  border:1px solid var(--line);
+  padding:17px;border-radius:14px;
+  background:linear-gradient(135deg, color-mix(in srgb, var(--brand) 24%, #0c0f15), #0c0f15);
+  border:1px solid rgba(255,255,255,0.09);
 }
 .mega-promo-ic{
   width:34px;height:34px;border-radius:9px;flex-shrink:0;
@@ -424,8 +433,8 @@ header{
 }
 .mega-promo-card:hover .mega-promo-ic{transform:translateY(-3px);}
 .mega-promo-ic svg{width:16px;height:16px;}
-.mega-promo-card strong{font-size:0.92rem;color:var(--ink);}
-.mega-promo-card p{font-size:0.8rem;color:var(--ink-soft);line-height:1.45;}
+.mega-promo-card strong{font-size:0.94rem;color:#fff;}
+.mega-promo-card p{font-size:0.8rem;color:rgba(255,255,255,0.62);line-height:1.45;}
 .mega-promo-card .btn{margin-top:4px;width:100%;justify-content:center;}
 .mega-col-divider{height:1px;background:var(--line);}
 .mega-more-link{display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;color:var(--brand-2);}
@@ -1504,7 +1513,7 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
         <button class="mega-trigger" aria-haspopup="true" aria-expanded="false">
           <span>Products</span><svg class="chev stroke"><use href="#ic-chev"/></svg>
         </button>
-        <div class="mega-panel mega-panel-xl">
+        <div class="mega-panel mega-panel-xl mega-panel-products">
           <div class="mega-grid mega-grid-4">
             <div class="mega-col">
               <span class="mega-col-label">Core finance operations</span>
@@ -1545,14 +1554,14 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
               </a>
               <a href="#solutions" class="mega-row">
                 <span class="ic"><svg class="stroke"><use href="#ic-gauge"/></svg></span>
-                <span class="mega-row-text"><strong>Sales Commissions</strong><p>Calculated from actual revenue</p></span>
+                <span class="mega-row-text"><strong>Sales Commissions &amp; Incentives</strong><p>Calculated from actual revenue</p></span>
               </a>
             </div>
             <div class="mega-col">
               <span class="mega-col-label">Close &amp; reporting</span>
               <a href="#" class="mega-row">
                 <span class="ic"><svg class="stroke"><use href="#ic-gauge"/></svg></span>
-                <span class="mega-row-text"><strong>FSCP <span class="mega-tag blue">200+ KPIs</span></strong><p>Close integrity, scored continuously</p></span>
+                <span class="mega-row-text"><strong>FSCP <span class="mega-tag blue">200+ KPIs</span></strong><p>Financial Statement Close Process — close integrity, scored continuously</p></span>
               </a>
               <span class="mega-col-label spaced">By industry</span>
               <a href="#" class="mega-row">
@@ -1568,8 +1577,8 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
               <div class="mega-promo-card">
                 <span class="mega-promo-ic"><svg class="stroke"><use href="#ic-search"/></svg></span>
                 <strong>Not sure where you're leaking?</strong>
-                <p>Send us one process area — we test the full transaction population and come back with a number.</p>
-                <a href="#cta" class="btn btn-primary btn-sm">Tell us your process</a>
+                <p>Send a sample of your data. We'll come back with an estimate of what's recoverable.</p>
+                <a href="#cta" class="btn btn-primary btn-sm">Get an estimate</a>
               </div>
               <div class="mega-col-divider"></div>
               <a href="#solutions" class="mega-more-link">All solutions <svg class="stroke"><use href="#ic-arrow-right"/></svg></a>
