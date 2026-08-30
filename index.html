@@ -343,14 +343,14 @@ header{
 .mega-grid-4{grid-template-columns:repeat(3, minmax(150px,1fr)) minmax(220px,250px);gap:8px 28px;}
 .mega-col{display:flex;flex-direction:column;gap:2px;}
 
-/* ---- Products panel: wider, full-height column dividers, filled promo tray ---- */
-.mega-panel-products{width:min(1020px, 95vw);}
-.mega-panel-products .mega-grid-4{grid-template-columns:repeat(3, minmax(150px,1fr)) 232px;gap:0;align-items:stretch;}
-.mega-panel-products .mega-grid-4 > .mega-col{padding:0 20px;border-right:1px solid var(--line);}
-.mega-panel-products .mega-grid-4 > .mega-col:first-child{padding-left:0;}
-.mega-panel-products .mega-grid-4 > .mega-col-promo{margin-left:20px;}
-.mega-panel-products .mega-grid-4 > .mega-col:nth-child(3) .mega-col-label.spaced{margin-top:auto;}
-.mega-panel-products .mega-col-promo .mega-col-divider{margin-top:auto;}
+/* ---- Products / Learning Center panels: wider, full-height column dividers, filled promo tray ---- */
+.mega-panel-cols{width:min(1020px, 95vw);}
+.mega-panel-cols .mega-grid-4{grid-template-columns:repeat(3, minmax(150px,1fr)) 232px;gap:0;align-items:stretch;}
+.mega-panel-cols .mega-grid-4 > .mega-col{padding:0 20px;border-right:1px solid var(--line);}
+.mega-panel-cols .mega-grid-4 > .mega-col:first-child{padding-left:0;}
+.mega-panel-cols .mega-grid-4 > .mega-col-promo{margin-left:20px;}
+.mega-panel-cols .mega-grid-4 > .mega-col:nth-child(3) .mega-col-label.spaced{margin-top:auto;}
+.mega-panel-cols .mega-col-promo .mega-col-divider{margin-top:auto;}
 .mega-col-label{
   font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;
   color:var(--ink-faint);margin-bottom:6px;
@@ -1513,7 +1513,7 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
         <button class="mega-trigger" aria-haspopup="true" aria-expanded="false">
           <span>Products</span><svg class="chev stroke"><use href="#ic-chev"/></svg>
         </button>
-        <div class="mega-panel mega-panel-xl mega-panel-products">
+        <div class="mega-panel mega-panel-xl mega-panel-cols">
           <div class="mega-grid mega-grid-4">
             <div class="mega-col">
               <span class="mega-col-label">Core finance operations</span>
@@ -1590,7 +1590,7 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
         <button class="mega-trigger" aria-haspopup="true" aria-expanded="false">
           <span>Learning Center</span><svg class="chev stroke"><use href="#ic-chev"/></svg>
         </button>
-        <div class="mega-panel mega-panel-xl">
+        <div class="mega-panel mega-panel-xl mega-panel-cols">
           <div class="mega-grid mega-grid-4">
             <div class="mega-col">
               <span class="mega-col-label">Read</span>
@@ -1619,25 +1619,24 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
               </a>
             </div>
             <div class="mega-col">
-              <span class="mega-col-label">Talk to us</span>
-              <a href="#cta" class="mega-row">
-                <span class="ic"><svg class="stroke"><use href="#ic-gauge"/></svg></span>
-                <span class="mega-row-text"><strong>2-Minute Estimate</strong><p>Describe your process, get a recoverable number back</p></span>
+              <span class="mega-col-label">Tools &amp; downloads</span>
+              <a href="#" class="mega-row">
+                <span class="ic"><svg class="stroke"><use href="#ic-doc"/></svg></span>
+                <span class="mega-row-text"><strong>The 200+ Close KPI Catalogue <span class="mega-tag amber">PDF</span></strong><p>Every KPI we track, by process area</p></span>
               </a>
-              <a href="#" class="mega-row" data-gst-chat title="Placeholder — link to the DARP-GST chat interface">
-                <span class="ic"><svg class="stroke"><use href="#ic-spark"/></svg></span>
-                <span class="mega-row-text"><strong>GST Co-pilot</strong><p>Ask about input credit, reverse charge or return mismatches</p></span>
+              <a href="#" class="mega-row">
+                <span class="ic"><svg class="stroke"><use href="#ic-gauge"/></svg></span>
+                <span class="mega-row-text"><strong>Recovery Estimator</strong><p>Share a sample, get a number back</p></span>
               </a>
             </div>
             <div class="mega-col-promo">
               <div class="mega-promo-card">
-                <span class="mega-promo-ic"><svg class="stroke"><use href="#ic-recover"/></svg></span>
-                <strong>See what's recoverable</strong>
-                <p>Two minutes, one process area — we'll size the number before there's a contract.</p>
-                <a href="#cta" class="btn btn-primary btn-sm">Get your number</a>
+                <strong>The Close KPI Catalogue</strong>
+                <p>All 200+ KPIs we score across inventory, rev rec, cash application and payments.</p>
+                <a href="#" class="btn btn-primary btn-sm">Download free</a>
               </div>
               <div class="mega-col-divider"></div>
-              <a href="#" class="mega-more-link">Explore resources <svg class="stroke"><use href="#ic-arrow-right"/></svg></a>
+              <a href="#" class="mega-more-link">Latest articles <svg class="stroke"><use href="#ic-arrow-right"/></svg></a>
             </div>
           </div>
         </div>
