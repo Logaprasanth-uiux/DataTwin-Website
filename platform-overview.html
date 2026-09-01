@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DataTwin — Playbook (internal reference)</title>
-<meta name="description" content="Internal reference page. Sections parked from the main DataTwin site, plus the GST recovery demo.">
+<title>DataTwin — Platform Overview</title>
+<meta name="description" content="One engine underneath the DARP framework, FSCP and everything that follows. Discover, Assess and Recover to plug the leakage, then the same rules go into Prevent — wrapping the systems you already run, with nothing migrated.">
 <script>(function(){try{document.documentElement.setAttribute('data-theme', localStorage.getItem('dt-theme') === 'dark' ? 'dark' : 'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1420,6 +1420,112 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
   .demo-strip{flex-wrap:wrap;border-radius:24px;}
 }
 
+/* ============================= PLATFORM OVERVIEW — HERO ============================= */
+.po-hero{padding:72px 0 104px;}
+.po-hero .hero-inner{gap:24px;}
+.po-hero .hero-inner .eyebrow{max-width:none;padding:9px 20px;line-height:1.45;}
+.po-hero h1{max-width:820px;}
+.po-hero .hero-desc{max-width:680px;font-size:1.08rem;}
+
+/* icon + text markers — same family as the hero trust line: no chrome,
+   just an accent icon and the label, stacked across one horizontal row */
+.po-chips{
+  display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;
+  gap:24px;margin-top:6px;max-width:100%;
+  font-size:0.85rem;color:var(--ink-soft);
+}
+.po-chip{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  font-weight:500;white-space:nowrap;
+}
+.po-chip svg{width:15px;height:15px;color:var(--brand-2);flex-shrink:0;}
+.po-chip + .po-chip::before{
+  content:"";position:absolute;left:-12px;top:50%;transform:translateY(-50%);
+  width:1px;height:14px;background:var(--line-strong);
+}
+@media (max-width:1040px){
+  .po-chips{flex-wrap:wrap;gap:10px 22px;}
+  .po-chip + .po-chip::before{display:none;}
+}
+
+.po-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:6px;}
+
+/* ---- engine schematic: DARP plugs the leak, same rules go forward into Prevent,
+       the whole thing wrapping the systems you already run ---- */
+.po-engine{position:relative;z-index:2;width:100%;max-width:780px;margin:14px auto 0;}
+.po-engine-inner{
+  position:relative;overflow:hidden;
+  border-radius:22px;padding:26px 26px 24px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--brand-2) 9%, transparent), transparent 62%),
+    var(--card-flat);
+  border:1px solid var(--line);
+}
+.po-engine-inner .ledger-grid{opacity:.5;}
+.po-stage-row{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:14px;
+}
+.po-stage{
+  background:var(--bg-panel);border:1px solid var(--line-strong);
+  border-radius:14px;padding:15px 17px;text-align:left;
+}
+.po-stage-k{
+  display:flex;align-items:center;gap:7px;margin-bottom:9px;
+  font-family:'IBM Plex Mono',monospace;font-size:0.66rem;letter-spacing:0.09em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+.po-stage-k svg{width:13px;height:13px;color:var(--brand-2);flex-shrink:0;}
+.po-stage strong{display:block;font-size:0.96rem;color:var(--ink);letter-spacing:-0.01em;}
+.po-stage .po-stage-sub{display:block;font-size:0.8rem;color:var(--ink-soft);margin-top:4px;line-height:1.45;}
+.po-stage.is-recover{border-color:color-mix(in srgb, var(--recover) 45%, var(--line-strong));}
+.po-stage.is-recover .po-stage-k svg{color:var(--recover);}
+.po-stage.is-prevent{border-color:color-mix(in srgb, var(--brand-violet) 55%, var(--line-strong));}
+.po-stage.is-prevent .po-stage-k svg{color:var(--brand-violet);}
+.po-conn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  min-width:82px;color:var(--ink-faint);
+}
+.po-conn svg{width:22px;height:22px;color:var(--brand-2);}
+.po-conn span{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;
+  text-transform:uppercase;text-align:center;color:var(--ink-faint);line-height:1.3;
+}
+.po-engine-rule{
+  position:relative;z-index:1;display:flex;align-items:center;gap:14px;margin:18px 2px;
+}
+.po-engine-rule::before,.po-engine-rule::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-strong),transparent);
+}
+.po-engine-rule span{
+  font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--brand-2);white-space:nowrap;
+}
+.po-wrap-tiles{
+  position:relative;z-index:1;width:fit-content;max-width:100%;margin:0 auto;
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  padding:16px 22px;border:1px dashed var(--line-strong);border-radius:14px;background:var(--bg-sunken);
+}
+.po-tile{
+  width:74px;height:52px;border-radius:10px;
+  background:var(--bg-panel);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-faint);
+  transition:transform .2s ease, color .2s ease, border-color .2s ease;
+}
+.po-tile svg{width:18px;height:18px;}
+.po-tile.is-new{border-style:dashed;border-color:var(--brand-2);color:var(--brand-2);}
+.po-engine-cap{
+  position:relative;z-index:1;
+  margin-top:12px;font-size:0.82rem;color:var(--ink-soft);text-align:center;
+}
+@media (max-width:640px){
+  .po-hero{padding:52px 0 76px;}
+  .po-stage-row{grid-template-columns:1fr;gap:10px;}
+  .po-conn{flex-direction:row;min-width:0;padding:2px 0;}
+  .po-conn svg{transform:rotate(90deg);}
+}
+
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
 }
@@ -1737,173 +1843,62 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
 </aside>
 <main id="top">
 
-<!-- ============================= PLAYBOOK NOTE ============================= -->
-<section class="section-tight">
-  <div class="wrap">
-    <div class="section-head-center">
-      <span class="eyebrow">Internal reference</span>
-      <h2>Playbook</h2>
-      <p>Sections kept out of the main flow, parked here for our own reference. Not linked from the site. The GST recovery demo sits at the bottom.</p>
-    </div>
-  </div>
-</section>
+<!-- ============================= HERO ============================= -->
+<section class="hero po-hero">
+  <div class="hero-aurora"></div>
+  <div class="ledger-grid"></div>
+  <div class="wrap hero-inner">
+    <span class="eyebrow">The engine underneath the DARP framework, FSCP and everything that follows</span>
 
-<!-- ============================= VIDEO / DEMO (tilted device mockup) ============================= -->
-<section class="demo-section" id="video">
-  <div class="wrap">
-    <div class="demo-stage">
-      <div class="ledger-grid" style="opacity:.3"></div>
-      <div class="demo-device">
-        <div class="demo-frame">
-          <div class="demo-frame-bar">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="demo-frame-url mono">app.datatwin.ai/discover</span>
+    <h1><span class="grad-text">One engine.</span><br>Solve as many problems as you have.</h1>
+
+    <p class="hero-desc">Not a separate system for every problem. Each one runs the same framework: Discover, Assess and Recover to plug the leakage first, then the same rules go into Prevent to stop it coming back. The engine wraps the systems you already run. Nothing migrated, nothing switched off.</p>
+
+    <div class="po-chips">
+      <span class="po-chip"><svg class="stroke"><use href="#ic-gauge"/></svg>A number in about two minutes</span>
+      <span class="po-chip"><svg class="stroke"><use href="#ic-layers"/></svg>Wraps your systems, nothing migrated</span>
+      <span class="po-chip"><svg class="stroke"><use href="#ic-control"/></svg>Your rules, configured not coded</span>
+      <span class="po-chip"><svg class="stroke"><use href="#ic-spark"/></svg>New source? It models itself</span>
+    </div>
+
+    <div class="po-actions">
+      <a href="index.html#recoverable" class="btn btn-primary">What can we recover? <svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></a>
+      <a href="index.html#darp" class="btn btn-ghost">The DARP framework.</a>
+    </div>
+
+    <div class="po-engine" aria-hidden="true">
+      <div class="po-engine-inner">
+        <div class="ledger-grid"></div>
+
+        <div class="po-stage-row">
+          <div class="po-stage is-recover">
+            <span class="po-stage-k"><svg class="stroke"><use href="#ic-recover"/></svg>Discover · Assess · Recover</span>
+            <strong>Plug the leakage first</strong>
+            <span class="po-stage-sub">The same framework, run once against your history.</span>
           </div>
-          <div class="demo-inner">
-            <span class="demo-badge"><span class="dot"></span>Product walkthrough — coming soon</span>
-            <h3 class="demo-title">Watch DataTwin read a transaction population and price the difference, live.</h3>
-            <p class="demo-sub">This spot is reserved for a walkthrough video. For now, here's the idea: two ledgers, reconciled in motion.</p>
-            <div class="twin-scan" aria-hidden="true">
-              <div class="twin-rail"></div>
-              <div class="twin-rail"></div>
-              <div class="twin-rail"></div>
-              <div class="twin-node" style="top:calc(20% - 4px); animation-delay:0s;"></div>
-              <div class="twin-node" style="top:calc(50% - 4px); animation-delay:1.2s;"></div>
-              <div class="twin-node" style="top:calc(80% - 4px); animation-delay:2.4s;"></div>
-              <div class="twin-node" style="top:calc(50% - 4px); animation-delay:3.4s;"></div>
-            </div>
-            <button class="play-ring-btn" aria-label="Play product walkthrough">
-              <span class="ring"></span><span class="ring r2"></span>
-              <svg class="stroke" style="fill:currentColor"><use href="#ic-play"/></svg>
-            </button>
+
+          <div class="po-conn">
+            <span>Same<br>rules</span>
+            <svg class="stroke"><use href="#ic-arrow-right"/></svg>
+          </div>
+
+          <div class="po-stage is-prevent">
+            <span class="po-stage-k"><svg class="stroke"><use href="#ic-loop"/></svg>Prevent</span>
+            <strong>Stop it coming back</strong>
+            <span class="po-stage-sub">The same rules, running forward at transaction entry.</span>
           </div>
         </div>
-      </div>
-      <div class="demo-vignette"></div>
-    </div>
-  </div>
-</section>
 
-<!-- ============================= VALUE BRIDGE ============================= -->
-<section class="section-tight">
-  <div class="wrap">
-    <div class="value-panel">
-      <div class="arc-glow g-green"></div>
-      <div class="value-grid">
-        <div class="value-left">
-          <span class="eyebrow">Why finance teams start here</span>
-          <h2>No adoption before you see the number.</h2>
-          <a href="#cta" class="btn btn-primary">Get started</a>
+        <div class="po-engine-rule"><span>One engine</span></div>
+
+        <div class="po-wrap-tiles">
+          <span class="po-tile"><svg class="stroke"><use href="#ic-cash"/></svg></span>
+          <span class="po-tile"><svg class="stroke"><use href="#ic-tax"/></svg></span>
+          <span class="po-tile"><svg class="stroke"><use href="#ic-doc"/></svg></span>
+          <span class="po-tile"><svg class="stroke"><use href="#ic-badge"/></svg></span>
+          <span class="po-tile is-new"><svg class="stroke"><use href="#ic-spark"/></svg></span>
         </div>
-        <div class="value-checklist">
-          <div class="value-item">
-            <span class="check"><svg class="stroke"><use href="#ic-check"/></svg></span>
-            <p><strong>Read-only, day one.</strong> Nothing changes in your systems or how your team works.</p>
-          </div>
-          <div class="value-item">
-            <span class="check"><svg class="stroke"><use href="#ic-check"/></svg></span>
-            <p><strong>The full population, not a sample.</strong> Every transaction checked, not a percentage of them.</p>
-          </div>
-          <div class="value-item">
-            <span class="check"><svg class="stroke"><use href="#ic-check"/></svg></span>
-            <p><strong>You see the number first.</strong> No contract before Discover and Assess are done.</p>
-          </div>
-          <div class="value-item">
-            <span class="check"><svg class="stroke"><use href="#ic-check"/></svg></span>
-            <p><strong>Prevention comes free.</strong> The same rules that recovered cash keep watching after go-live.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================= ENGINE — reads before it records ============================= -->
-<section class="section-tight">
-  <div class="wrap">
-    <div class="engine-row">
-      <div class="engine-visual">
-        <svg width="0" height="0"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--brand)"/><stop offset="100%" stop-color="var(--brand-2)"/></linearGradient></defs></svg>
-        <div class="engine-dial" role="img" aria-label="100 percent of transactions read">
-          <div class="dial-rings" aria-hidden="true"></div>
-          <div class="dial-dots" aria-hidden="true">
-            <i style="--a:0deg"></i><i style="--a:30deg"></i><i style="--a:60deg"></i>
-            <i style="--a:90deg"></i><i style="--a:120deg"></i><i style="--a:150deg"></i>
-            <i style="--a:180deg"></i><i style="--a:210deg"></i><i style="--a:240deg"></i>
-            <i style="--a:270deg"></i><i style="--a:300deg"></i><i style="--a:330deg"></i>
-          </div>
-          <div class="dial-sweep" aria-hidden="true"></div>
-          <svg class="dial-ring" viewBox="0 0 120 120" aria-hidden="true">
-            <circle class="track" cx="60" cy="60" r="54"/>
-            <circle class="fill" cx="60" cy="60" r="54" pathLength="100"/>
-          </svg>
-          <div class="dial-label">
-            <span class="num">100<span class="pct">%</span></span>
-            <span class="cap">of transactions read</span>
-          </div>
-        </div>
-      </div>
-      <div class="engine-text">
-        <span class="eyebrow">The engine</span>
-        <h2>An engine that reads before it records.</h2>
-        <p>Discover, Assess, Recover, Prevent — the DARP framework checks every transaction against everything that should agree with it, before it becomes a number you have to defend.</p>
-        <p class="engine-meta"><span class="pulse" aria-hidden="true"></span>Live · full population · read-only</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================= INTEGRATIONS ============================= -->
-<section class="section">
-  <div class="arc-glow g-blue"></div>
-  <div class="wrap">
-    <div class="section-head-center">
-      <span class="eyebrow">Integrations</span>
-      <h2>Runs above the systems you already have.</h2>
-      <p>No migration, no new system of record. DataTwin reads on top of the ERP and finance tools you're already running.</p>
-    </div>
-    <div class="integration-grid">
-      <div class="integration-card"><span class="mark" style="background:linear-gradient(135deg,var(--brand),var(--brand-2))">SAP</span><div><div class="name">SAP</div><div class="cat">ERP</div></div></div>
-      <div class="integration-card"><span class="mark" style="background:linear-gradient(135deg,var(--brand-violet),var(--brand-2))">NS</span><div><div class="name">NetSuite</div><div class="cat">ERP</div></div></div>
-      <div class="integration-card"><span class="mark" style="background:var(--accent-amber);color:var(--pill-ink)">T</span><div><div class="name">Tally</div><div class="cat">Accounting</div></div></div>
-      <div class="integration-card"><span class="mark" style="background:linear-gradient(135deg,var(--brand),var(--brand-violet))">OR</span><div><div class="name">Oracle</div><div class="cat">ERP</div></div></div>
-      <div class="integration-card"><span class="mark" style="background:var(--accent-lime);color:var(--pill-ink)">ZB</span><div><div class="name">Zoho Books</div><div class="cat">Accounting</div></div></div>
-      <div class="integration-card"><span class="mark" style="background:linear-gradient(135deg,var(--brand-2),var(--recover))">B</span><div><div class="name">Your bank feeds</div><div class="cat">Reconciliation</div></div></div>
-    </div>
-    <div style="text-align:center;margin-top:40px;position:relative;z-index:1;">
-      <a href="#video" class="btn btn-ghost">See in action</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================= TRUSTED BY (no fabricated quotes) ============================= -->
-<section class="section" id="trusted">
-  <div class="wrap">
-    <div class="section-head-center">
-      <span class="eyebrow">By the numbers</span>
-      <h2>We publish numbers, not quotes.</h2>
-      <p>No invented testimonials here — just the customers we work with, and the numbers behind the engagement.</p>
-    </div>
-    <div class="trust-cards">
-      <div class="card trust-stat-card featured">
-        <span class="ic"><svg class="icon stroke"><use href="#ic-layers"/></svg></span>
-        <span class="num">100%</span>
-        <span class="cap">of transactions read, not sampled</span>
-      </div>
-      <div class="card trust-stat-card">
-        <span class="ic"><svg class="icon stroke"><use href="#ic-gauge"/></svg></span>
-        <span class="num">2 min</span>
-        <span class="cap">to a recoverable number</span>
-      </div>
-      <div class="card trust-stat-card">
-        <span class="ic"><svg class="icon stroke"><use href="#ic-loop"/></svg></span>
-        <span class="num">4-step</span>
-        <span class="cap">DARP method</span>
-      </div>
-      <div class="card trust-stat-card">
-        <span class="ic"><svg class="icon stroke"><use href="#ic-shield"/></svg></span>
-        <span class="num">0</span>
-        <span class="cap">process changes required</span>
+        <p class="po-engine-cap">The engine wraps the systems you already run. Nothing migrated, nothing switched off.</p>
       </div>
     </div>
   </div>
@@ -1966,21 +1961,6 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
     </div>
   </div>
 </footer>
-
-<!-- ============================= DEMO STRIP — GST DISCOVERY LANDING PAGE ============================= -->
-<!-- Placeholder promo for the standalone GST recovery demo, kept for internal/demo purposes. -->
-<section class="demo-strip-section">
-  <div class="wrap">
-    <a href="gst-discovery/index.html" target="_blank" rel="noopener" class="demo-strip">
-      <span class="demo-strip-tag">Live demo</span>
-      <span class="demo-strip-text">
-        <strong>GST — Input Tax Credit Recovery</strong>
-        <p>See a standalone product flow for one of our recovery use cases. Opens in a new tab.</p>
-      </span>
-      <span class="demo-strip-arrow"><svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></span>
-    </a>
-  </div>
-</section>
 
 <script>
 /* ============================= THEME ============================= */
