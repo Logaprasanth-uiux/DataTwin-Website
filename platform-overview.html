@@ -1897,6 +1897,138 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
   .pw-lens-progress{max-width:none;}
 }
 
+/* ============================= AI-NATIVE — where it runs, and the line it does not cross ============================= */
+.ain-zone{
+  position:relative;border:1px solid color-mix(in srgb, var(--brand-2) 24%, var(--line));border-radius:22px;
+  background:
+    radial-gradient(130% 150% at 50% -30%, color-mix(in srgb, var(--brand-2) 9%, transparent), transparent 62%),
+    var(--bg-panel);
+  padding:clamp(20px,2.6vw,30px);
+}
+.ain-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media (max-width:900px){.ain-cards{grid-template-columns:1fr;}}
+.ain-card{
+  display:flex;flex-direction:column;
+  padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--bg-sunken);
+  transition:transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s ease;
+}
+.ain-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb, var(--brand-2) 42%, var(--line));}
+.ain-card-ic{
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, var(--brand), var(--brand-2));color:#fff;
+  box-shadow:0 0 18px -4px color-mix(in srgb, var(--brand-2) 55%, transparent);
+}
+.ain-card-ic svg{width:18px;height:18px;}
+.ain-card h3{font-size:1rem;margin:14px 0 8px;line-height:1.3;}
+.ain-card p{font-size:0.87rem;line-height:1.58;color:var(--ink-soft);}
+
+/* the seam between "AI resolves it" and "rules decide it" */
+.ain-seam{position:relative;height:46px;display:flex;align-items:center;justify-content:center;margin:2px 0;}
+.ain-seam::before{
+  content:"";position:absolute;left:5%;right:5%;top:50%;height:2px;transform:translateY(-50%);
+  background:linear-gradient(90deg, transparent, var(--brand-2) 18%, var(--brand-violet) 50%, var(--brand-2) 82%, transparent);
+}
+.ain-seam-tag{
+  position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;
+  font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.11em;text-transform:uppercase;
+  color:var(--ink-soft);padding:6px 14px;border-radius:100px;background:var(--bg);border:1px solid var(--line-strong);
+}
+.ain-seam-tag svg{width:12px;height:12px;color:var(--brand-2);}
+
+/* the wall — deterministic, deliberately walled off */
+.ain-wall{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;
+  padding:clamp(22px,3vw,32px);border-radius:18px;
+  background:var(--bg-sunken);border:1px solid var(--line-strong);
+  box-shadow:inset 0 3px 0 color-mix(in srgb, var(--ink-faint) 45%, transparent);
+}
+.ain-wall::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;
+  background-image:repeating-linear-gradient(135deg, var(--line-soft) 0 1px, transparent 1px 10px);
+  -webkit-mask-image:linear-gradient(160deg, #000, transparent 72%);
+          mask-image:linear-gradient(160deg, #000, transparent 72%);
+}
+.ain-wall-ic{
+  position:relative;z-index:1;flex-shrink:0;
+  width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg-panel);border:1px solid var(--line-strong);color:var(--ink);
+}
+.ain-wall-ic svg{width:22px;height:22px;}
+.ain-wall-body{position:relative;z-index:1;}
+.ain-wall h3{font-size:1.08rem;margin:0 0 8px;}
+.ain-wall p{font-size:0.92rem;line-height:1.62;color:var(--ink-soft);max-width:64ch;}
+@media (max-width:560px){ .ain-wall{grid-template-columns:1fr;gap:16px;} }
+
+.ain-foot{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;
+  margin-top:26px;padding-top:22px;border-top:1px solid var(--line-soft);
+}
+.ain-foot p{font-size:0.92rem;color:var(--ink-soft);max-width:54ch;}
+
+/* ============================= ACROSS THE PLATFORM — two constants ============================= */
+.axp-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media (max-width:820px){.axp-grid{grid-template-columns:1fr;}}
+.axp-card{
+  position:relative;overflow:hidden;
+  padding:clamp(24px,3vw,32px) clamp(22px,3vw,30px) clamp(24px,3vw,30px) clamp(40px,4.5vw,52px);
+  border:1px solid var(--line);border-radius:20px;background:var(--bg-panel);
+}
+.axp-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size:100% 34px, 44px 100%;
+  -webkit-mask-image:linear-gradient(180deg, #000, transparent 55%);
+          mask-image:linear-gradient(180deg, #000, transparent 55%);
+}
+.axp-rail{
+  position:absolute;z-index:1;left:22px;top:30px;bottom:30px;width:2px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--brand-2) 65%, transparent), color-mix(in srgb, var(--brand) 22%, transparent));
+}
+.axp-rail i{position:absolute;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--brand-2);box-shadow:0 0 10px -1px var(--brand-2);}
+.axp-rail i:nth-child(1){top:-2px;}
+.axp-rail i:nth-child(2){top:calc(50% - 4px);}
+.axp-rail i:nth-child(3){bottom:-2px;}
+.axp-inner{position:relative;z-index:1;}
+.axp-ic{
+  width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg-sunken);color:var(--brand-2);border:1px solid color-mix(in srgb, var(--brand-2) 22%, var(--line));
+}
+.axp-ic svg{width:20px;height:20px;}
+.axp-card h3{font-size:1.15rem;margin:16px 0 10px;}
+.axp-card p{font-size:0.92rem;line-height:1.62;color:var(--ink-soft);}
+.axp-link{
+  display:inline-flex;align-items:center;gap:7px;margin-top:16px;
+  font-size:0.88rem;font-weight:600;color:var(--ink);transition:color .2s ease;
+}
+.axp-link svg{width:14px;height:14px;color:var(--brand-2);transition:transform .2s ease;}
+.axp-link:hover{color:var(--brand-2);}
+.axp-link:hover svg{transform:translateX(3px);}
+.axp-foot{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 26px;margin-top:28px;
+}
+.axp-foot p{font-size:1rem;color:var(--ink-soft);}
+
+/* staggered entrance, only where motion is welcome */
+@media (prefers-reduced-motion: no-preference){
+  .wrap.reveal-pending .ain-card,
+  .wrap.reveal-pending .ain-wall,
+  .wrap.reveal-pending .axp-card{opacity:0;transform:translateY(16px);}
+  .wrap.reveal-in .ain-card,
+  .wrap.reveal-in .ain-wall,
+  .wrap.reveal-in .axp-card{opacity:1;transform:none;transition:opacity .55s ease, transform .6s cubic-bezier(.2,.7,.2,1);}
+  .wrap.reveal-in .ain-card:nth-child(2){transition-delay:.08s;}
+  .wrap.reveal-in .ain-card:nth-child(3){transition-delay:.16s;}
+  .wrap.reveal-in .ain-wall{transition-delay:.14s;}
+  .wrap.reveal-in .axp-card:nth-child(2){transition-delay:.1s;}
+  .wrap.reveal-pending .ain-seam-tag{opacity:0;}
+  .wrap.reveal-in .ain-seam-tag{animation:ain-lock .5s cubic-bezier(.34,1.56,.64,1) .34s both;}
+  @keyframes ain-lock{0%{transform:scale(.55);opacity:0;}60%{opacity:1;}100%{transform:scale(1);opacity:1;}}
+}
+
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
 }
@@ -1939,6 +2071,8 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
 <symbol id="ic-swap" viewBox="0 0 24 24"><path class="stroke" d="M4 8h13"/><path class="stroke" d="m13 4 4 4-4 4"/><path class="stroke" d="M20 16H7"/><path class="stroke" d="m11 20-4-4 4-4"/></symbol>
 <symbol id="ic-flow" viewBox="0 0 24 24"><circle class="stroke" cx="6" cy="6" r="2.4"/><circle class="stroke" cx="6" cy="18" r="2.4"/><circle class="stroke" cx="18" cy="12" r="2.4"/><path class="stroke" d="M8.3 7.1 15.6 10.8"/><path class="stroke" d="M8.3 16.9 15.6 13.2"/></symbol>
 <symbol id="ic-bars" viewBox="0 0 24 24"><path class="stroke" d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+<symbol id="ic-frame" viewBox="0 0 24 24"><path class="stroke" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/><rect class="stroke" x="9" y="9" width="6" height="6" rx="1"/></symbol>
+<symbol id="ic-schema" viewBox="0 0 24 24"><path class="stroke" d="M12 3 20 12 12 21 4 12Z"/><path class="stroke" d="M12 8.5v7M8.5 12h7"/></symbol>
 </svg>
 
 <!-- ============================= NAV ============================= -->
@@ -2594,6 +2728,113 @@ footer{position:relative;overflow:hidden;border-top:1px solid var(--line);paddin
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ============================= AI-NATIVE ============================= -->
+<section class="section" id="ai-native">
+  <div class="arc-glow g-blue"></div>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">AI-native</span>
+      <h2>What makes it AI-native</h2>
+      <p>Not a chatbot bolted onto a reporting tool. Three points where the platform would not function the same way without it, and one place we deliberately keep it out. The full architecture, from the agents to the models and the reasoning engine, is on the How AI is used page.</p>
+    </div>
+
+    <div class="ain-zone">
+      <div class="ain-cards">
+        <article class="ain-card">
+          <span class="ain-card-ic"><svg class="stroke"><use href="#ic-frame"/></svg></span>
+          <h3>It models new sources for itself</h3>
+          <p>A source we have never seen is read, understood and modelled on arrival: fields inferred, relationships worked out, the acquisition model built without a mapping exercise.</p>
+        </article>
+        <article class="ain-card">
+          <span class="ain-card-ic"><svg class="stroke"><use href="#ic-schema"/></svg></span>
+          <h3>It builds the schema from your requirement</h3>
+          <p>Describe what needs reconciling against what. The engine elicits the detail and constructs the schema, with the rules and checks embedded inside it, for entities it has never handled.</p>
+        </article>
+        <article class="ain-card">
+          <span class="ain-card-ic"><svg class="stroke"><use href="#ic-swap"/></svg></span>
+          <h3>It reasons through the hard reconciliations</h3>
+          <p>Where identifiers disagree, evidence sits in a document, or the answer depends on context across several records, reasoning resolves it, faster and more accurately than a manual queue.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="ain-seam">
+      <span class="ain-seam-tag"><svg class="stroke"><use href="#ic-lock"/></svg>deliberate &#183; not moving</span>
+    </div>
+
+    <div class="ain-wall">
+      <span class="ain-wall-ic"><svg class="stroke"><use href="#ic-shield"/></svg></span>
+      <div class="ain-wall-body">
+        <h3>It stays out of the posting decision</h3>
+        <p>Anything that becomes an entry in your books is governed by explicit, inspectable rules. Nothing posts because a model was confident. That boundary is deliberate and it is not moving.</p>
+      </div>
+    </div>
+
+    <div class="ain-foot">
+      <p>Agents, models, human-in-the-loop gates and the reasoning engine, in full.</p>
+      <a href="#" class="btn btn-ghost">How AI is used <svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= ACROSS THE PLATFORM ============================= -->
+<section class="section" id="across">
+  <div class="arc-glow g-violet"></div>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Across the platform</span>
+      <h2>Two things that apply at every stage</h2>
+    </div>
+
+    <div class="axp-grid">
+      <article class="axp-card">
+        <span class="axp-rail" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="axp-inner">
+          <span class="axp-ic"><svg class="stroke"><use href="#ic-lock"/></svg></span>
+          <h3>Security</h3>
+          <p>Read-only by default. ISO 27001 certified and SOC 2 attested, with role-based access, residency options and an immutable audit trail. AWS, Azure, GCP or your own cloud.</p>
+          <a href="#" class="axp-link">Read more <svg class="stroke"><use href="#ic-arrow-right"/></svg></a>
+        </div>
+      </article>
+      <article class="axp-card">
+        <span class="axp-rail" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="axp-inner">
+          <span class="axp-ic"><svg class="stroke"><use href="#ic-spark"/></svg></span>
+          <h3>How AI is used</h3>
+          <p>The full account of where AI earns its place: document understanding, source modelling, schema construction, reasoning on hard matches, natural-language query. And where deterministic rules run instead.</p>
+          <a href="#" class="axp-link">Read more <svg class="stroke"><use href="#ic-arrow-right"/></svg></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="axp-foot">
+      <p>Prefer to see the engine working rather than described?</p>
+      <a href="index.html#darp" class="btn btn-ghost">See the DARP Framework <svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FINAL CTA ============================= -->
+<section class="section-tight" id="cta">
+  <div class="wrap">
+    <div class="cta-section">
+      <div class="ledger-grid" style="opacity:.4"></div>
+      <div class="glow-blob cta-glow-a"></div>
+      <div class="glow-blob cta-glow-b"></div>
+      <div style="position:relative">
+        <span class="eyebrow" style="margin-bottom:20px">Get started</span>
+        <h2>Tell us your problem.<br>We'll tell you what we can recover.</h2>
+        <p>Working from the transaction history your systems already hold, we run our discovery. Nothing changes in your systems, nobody in your team changes how they work, and you see what's recoverable before there's anything to sign. If the number isn&rsquo;t worth acting on, at least you know you&rsquo;re safe.</p>
+        <div class="cta-buttons">
+          <a href="index.html#top" class="btn btn-primary">Tell us your problem <svg class="icon stroke" style="width:16px;height:16px"><use href="#ic-arrow-right"/></svg></a>
+          <a href="mailto:solve@datatwin.ai" class="btn btn-ghost">Email us instead</a>
+        </div>
+        <div class="cta-email mono">solve@datatwin.ai</div>
+      </div>
+    </div>
   </div>
 </section>
 </main>
