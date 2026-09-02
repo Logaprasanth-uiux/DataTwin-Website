@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <title>DARP GST Recovery</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>(function(){try{document.documentElement.setAttribute('data-theme', localStorage.getItem('dt-theme') === 'dark' ? 'dark' : 'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -165,14 +169,15 @@
 
   /* ============ SECTIONS shared ============ */
   section{ padding: clamp(64px,9vw,112px) 0; }
-  .section-head{ max-width: 640px; margin-bottom: clamp(36px,5vw,56px); }
+  /* body sections read centered — the left-aligned hero stays the one asymmetric statement */
+  .section-head{ max-width: 680px; margin: 0 auto clamp(36px,5vw,56px); text-align: center; }
   .section-head h2{ font-size: clamp(26px,3.4vw,40px); line-height: 1.14; margin-top: 10px; }
-  .section-head p{ color: var(--text-muted); margin-top: 16px; font-size: 16.5px; max-width: 56ch; }
+  .section-head p{ color: var(--text-muted); margin: 16px auto 0; font-size: 16.5px; max-width: 56ch; }
   .reveal{ opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in{ opacity: 1; transform: translateY(0); }
 
   /* ============ PROBLEM — leak tabs ============ */
-  .leak-tabbar{ display:flex; gap: 4px; overflow-x: auto; padding: 2px 2px 16px; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
+  .leak-tabbar{ display:flex; gap: 4px; justify-content: safe center; overflow-x: auto; padding: 2px 2px 16px; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
   .leak-tabbar::-webkit-scrollbar{ display: none; }
   .leak-tab{
     position: relative; flex: 0 0 auto; min-width: 132px;
@@ -290,6 +295,8 @@
   .foot-col a:hover{ color: var(--text); }
   .foot-bottom{ margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line-soft); display:flex; justify-content:space-between; flex-wrap:wrap; gap: 10px; font-size: 12.5px; color: var(--text-faint); font-family: var(--mono); }
 </style>
+</head>
+<body>
 
 <!-- ============================================================ -->
 
@@ -344,13 +351,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ============ PROBLEM MARQUEE ============ -->
-  <div class="trustbar" aria-label="Common causes of unclaimed input tax credit">
-    <div class="marquee">
-      <div class="marquee-track" id="problemMarquee"></div>
-    </div>
-  </div>
 
   <!-- ============ PROBLEM ============ -->
   <section id="problem">
@@ -480,6 +480,13 @@
         <a class="btn btn-primary" href="chat-interface.html" data-cta="final">Start Free GST Discovery →</a>
         <a class="btn btn-ghost" href="mailto:solve@datatwin.ai">Talk to the team</a>
       </div>
+    </div>
+  </div>
+
+  <!-- ============ PROBLEM MARQUEE — sits just above the footer, a quiet pre-footer band carried across landing pages ============ -->
+  <div class="trustbar" aria-label="Common causes of unclaimed input tax credit">
+    <div class="marquee">
+      <div class="marquee-track" id="problemMarquee"></div>
     </div>
   </div>
 
@@ -787,3 +794,5 @@
   }
 })();
 </script>
+</body>
+</html>
